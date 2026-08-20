@@ -1,0 +1,21 @@
+LadderControl für Leitern um zu platzieren
+- Hat alle Leitern(vector)
+- bestimmt die Spawnpunnkte wie ist noch nicht geklärt
+
+BarrelControl
+- Barrel intersection prüfen
+
+
+Player
+- brauch Leben
+- move Methode neu wegen feature
+- wenn Speiler aus bild fällt game over
+
+Ladder
+-climb bug prüfe pointer auf girder
+
+Game
+- Ziel für Player wenn erreicht den Barrel spwan Speed anpassen und leitern neu platzieren
+
+
+test für Player.move und Player.update ubd irgendwas anderes
