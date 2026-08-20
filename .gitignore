@@ -1,0 +1,12 @@
+# Build output
+build/
+
+# Fetched dependencies (populated via `make getSFML` / `make getGTest`)
+SFML/
+GoogleTest/
+SFML.tar.gz
+googletest-*.tar.gz
+
+# Compiled binaries (Makefile route)
+game
+tests
