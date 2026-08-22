@@ -63,7 +63,7 @@ std::vector<Ladder> Game::build_ladders(const std::vector<Girder>& girders) {
 
     float ladderHeight = std::abs(yBottom - yTop);
 
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5);
+    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[3]);
 
     xPositon = 100;
 
@@ -73,7 +73,7 @@ std::vector<Ladder> Game::build_ladders(const std::vector<Girder>& girders) {
 
     ladderHeight = std::abs(yBottom - yTop);
 
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5);
+    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[2]);
 
     xPositon = 400;
 
@@ -83,7 +83,7 @@ std::vector<Ladder> Game::build_ladders(const std::vector<Girder>& girders) {
 
     ladderHeight = std::abs(yBottom - yTop);
 
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5);
+    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[2]);
 
     xPositon = 150;
 
@@ -93,7 +93,7 @@ std::vector<Ladder> Game::build_ladders(const std::vector<Girder>& girders) {
 
     ladderHeight = std::abs(yBottom - yTop);
 
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5);
+    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[1]);
 
     return ladders;
 }

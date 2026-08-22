@@ -61,7 +61,7 @@ void Player::move(Direction direction) {
 }
 
 void Player::climbLadder(Ladder& ladder) {
-    if (ladder.covers_x(position.x)) {
+    if (ladder.covers_x(position.x) && ladder.get_girder_pointer() == current_girder) {
         position.x = ladder.get_center() - (playerWidth / 2); 
         velocity.y = -1.0f * 200.f;
         isClimbing = true;
