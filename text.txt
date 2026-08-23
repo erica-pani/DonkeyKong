@@ -6,7 +6,7 @@ BarrelControl
 
 Player
 - brauch Leben
-- wenn Speiler aus bild fällt game over
+- wenn Speiler aus bild fällt game over oder Leben weniger
 
 Ladder
 
