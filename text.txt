@@ -3,8 +3,6 @@ LadderControl für Leitern um zu platzieren
 - bestimmt die Spawnpunnkte wie ist noch nicht geklärt
 
 BarrelControl
-- Barrel intersection prüfen
-
 
 Player
 - brauch Leben
