@@ -1,4 +1,4 @@
-LadderControl für Leitern um zu platzieren (Öuca)
+LadderControl für Leitern um zu platzieren (Luca)
 - Hat alle Leitern(vector)
 - bestimmt die Spawnpunnkte wie ist noch nicht geklärt
 
