@@ -10,7 +10,7 @@ Game::Game() :
     game_layer(window),
     girders(),
     ladders(),
-    player({80, -190}),
+    player({100, -190}),
     barrel_control(game_layer) {
 
         if (!background_texture.loadFromFile("assets/img/IMG_0127.jpg")) {
@@ -63,7 +63,7 @@ std::vector<Ladder> Game::build_ladders(const std::vector<Girder>& girders) {
 
     float ladderHeight = std::abs(yBottom - yTop);
 
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5);
+    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[3]);
 
     xPositon = 100;
 
@@ -73,7 +73,7 @@ std::vector<Ladder> Game::build_ladders(const std::vector<Girder>& girders) {
 
     ladderHeight = std::abs(yBottom - yTop);
 
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5);
+    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[2]);
 
     xPositon = 400;
 
@@ -83,7 +83,7 @@ std::vector<Ladder> Game::build_ladders(const std::vector<Girder>& girders) {
 
     ladderHeight = std::abs(yBottom - yTop);
 
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5);
+    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[2]);
 
     xPositon = 150;
 
@@ -93,7 +93,7 @@ std::vector<Ladder> Game::build_ladders(const std::vector<Girder>& girders) {
 
     ladderHeight = std::abs(yBottom - yTop);
 
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5);
+    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[1]);
 
     return ladders;
 }
@@ -148,11 +148,11 @@ bool Game::input() {
 }
 
 void Game::update(float time_passed) {
+    if (barrel_control.check_barrel_intersection(player)) {
+        return;
+    }
     barrel_control.update(time_passed, girders);
     player.update(time_passed, girders);
-    if (barrel_control.check_barrel_intersection(player)) {
-        window.close();
-    }
 }
 
 void Game::draw() {

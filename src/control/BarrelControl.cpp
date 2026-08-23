@@ -41,20 +41,30 @@ void BarrelControl::update(float dt, const std::vector<Girder>& girders) {
 }
 
 bool BarrelControl::check_barrel_intersection(Player& player) {
-    sf::Vector2f player_position = player.getShape().getPosition();
+    sf::RectangleShape player_shape = player.getShape();
     for (auto& barrel : barrels) {
-        sf::Vector2f barrel_center = barrel->get_position();
-
-        if (barrel_center.x + constants::BARREL_RADIUS >= player_position.x ||
-            barrel_center.x - constants::BARREL_RADIUS <= player_position.x + 20.f){
-        }
-
-        if (!(barrel_center.y + constants::BARREL_RADIUS >= player_position.y ||
-            barrel_center.y - constants::BARREL_RADIUS <= player_position.y + 30.f)){
+        if (check_circle_collision(player_shape, barrel->get_position())) {
             return true;
         }
     }
     return false;
+}
+
+bool BarrelControl::check_circle_collision(const sf::RectangleShape& playerShape, sf::Vector2f barrel_position) {
+    float playerLeft = playerShape.getPosition().x - playerShape.getSize().x / 2;
+    float playerTop = playerShape.getPosition().y;
+    float playerHeight = playerShape.getSize().y; 
+
+    float nearestX = std::max(playerLeft,
+        std::min(barrel_position.x, playerLeft + playerShape.getSize().x));
+    float nearestY = std::max(playerTop,
+        std::min(barrel_position.y, playerTop + playerHeight));
+
+    float deltaX = barrel_position.x - nearestX;
+    float deltaY = barrel_position.y - nearestY;
+
+    return (deltaX * deltaX + deltaY * deltaY) <= 
+        (constants::BARREL_RADIUS * constants::BARREL_RADIUS);
 }
 
 void BarrelControl::draw() {

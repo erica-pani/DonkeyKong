@@ -3,16 +3,12 @@ LadderControl für Leitern um zu platzieren
 - bestimmt die Spawnpunnkte wie ist noch nicht geklärt
 
 BarrelControl
-- Barrel intersection prüfen
-
 
 Player
 - brauch Leben
-- move Methode neu wegen feature
-- wenn Speiler aus bild fällt game over
+- wenn Speiler aus bild fällt game over oder Leben weniger
 
 Ladder
--climb bug prüfe pointer auf girder
 
 Game
 - Ziel für Player wenn erreicht den Barrel spwan Speed anpassen und leitern neu platzieren
