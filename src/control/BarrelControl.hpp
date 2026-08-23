@@ -27,6 +27,8 @@ private:
 
     float spawn_timer;
     float spawn_interval;
+
+    bool check_circle_collision(const sf::RectangleShape& playerShape, sf::Vector2f barrel_position);
 };
 
 #endif

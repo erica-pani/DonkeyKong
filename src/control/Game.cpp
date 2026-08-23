@@ -10,7 +10,7 @@ Game::Game() :
     game_layer(window),
     girders(),
     ladders(),
-    player({80, -190}),
+    player({100, -190}),
     barrel_control(game_layer) {
 
         if (!background_texture.loadFromFile("assets/img/IMG_0127.jpg")) {
@@ -148,11 +148,12 @@ bool Game::input() {
 }
 
 void Game::update(float time_passed) {
+    if (barrel_control.check_barrel_intersection(player)) {
+        return;
+    }
     barrel_control.update(time_passed, girders);
     player.update(time_passed, girders);
-    if (barrel_control.check_barrel_intersection(player)) {
-        window.close();
-    }
+    
 }
 
 void Game::draw() {

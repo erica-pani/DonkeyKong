@@ -24,10 +24,10 @@ Player::Player(sf::Vector2f position) :
     isClimbing(false),
     playerTexture(loadTextureSafely()) ,
     playerSprite(playerTexture){
-        playerSprite.scale({0.22f, 0.22f});
-        playerSprite.setPosition(position);
-
+        //playerSprite.scale({0.22f, 0.22f});
+        //playerSprite.setPosition(position);
         playerShape.setSize({playerWidth, playerHeight});
+        playerShape.setOrigin({playerWidth / 2.0f, 0.0f});
         playerShape.setPosition(position);
         playerShape.setFillColor(sf::Color(200, 0, 0));
     }
@@ -62,7 +62,7 @@ void Player::move(Direction direction) {
 
 void Player::climbLadder(Ladder& ladder) {
     if (ladder.covers_x(position.x) && ladder.get_girder_pointer() == current_girder) {
-        position.x = ladder.get_center() - (playerWidth / 2); 
+        position.x = ladder.get_center(); 
         velocity.y = -1.0f * 200.f;
         isClimbing = true;
         isJumping = false;
@@ -73,7 +73,7 @@ void Player::climbLadder(Ladder& ladder) {
 
 void Player::jump() {
     if (!isJumping && current_girder != nullptr) {
-        velocity.y = -1.0f * 250.f;
+        velocity.y = -1.0f * 300.f;
         isJumping = true;
     }
 }
@@ -84,9 +84,12 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
     float oldPosition = position.x;
     position.x += velocity.x * dt;
     
-    if (current_girder != nullptr && !isClimbing) {
+    if (current_girder == nullptr && !isClimbing && !isJumping) {
 
-        bool canMove = false;
+        velocity.y += constants::GRAVITY * dt;
+        position.y += velocity.y * dt;
+        check_girder_intersection(girders);
+        /*bool canMove = false;
 
         if (velocity.x > 0){
             canMove = current_girder->covers_x(position.x + playerWidth);
@@ -97,6 +100,7 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
         if (!canMove) {
             position.x = oldPosition;
         }
+        */
     }
 
     if (isClimbing) {
@@ -111,7 +115,7 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
     
 
     if (isJumping) {
-        velocity.y += 600.f * dt;
+        velocity.y += constants::GRAVITY * dt;
         position.y += velocity.y * dt;
 
         if (velocity.y > 0) {
@@ -126,7 +130,7 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
         position.y = current_girder->surface_y_at(position.x) - playerHeight;
         //position.y += velocity.y * dt;
     }
-    //check_girder_intersection(girders);
+    check_girder_intersection(girders);
     playerShape.setPosition(position);
 }
 
