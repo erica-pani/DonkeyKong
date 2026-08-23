@@ -153,7 +153,6 @@ void Game::update(float time_passed) {
     }
     barrel_control.update(time_passed, girders);
     player.update(time_passed, girders);
-    
 }
 
 void Game::draw() {
