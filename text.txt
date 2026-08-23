@@ -1,10 +1,10 @@
-LadderControl für Leitern um zu platzieren
+LadderControl für Leitern um zu platzieren (Öuca)
 - Hat alle Leitern(vector)
 - bestimmt die Spawnpunnkte wie ist noch nicht geklärt
 
 BarrelControl
 
-Player
+Player (Luca)
 - brauch Leben
 - wenn Speiler aus bild fällt game over oder Leben weniger
 
