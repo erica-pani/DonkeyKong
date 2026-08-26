@@ -7,7 +7,7 @@ Enemy::Enemy(sf::Vector2f position):
     position(position),
     velocity({0 ,0}){
         enemyShape.setSize({25, 35});
-        enemyShape.setFillColor(sf::Color(200, 50, 50));
+        enemyShape.setFillColor(sf::Color(255, 192, 203));
         enemyShape.setPosition(position);
         enemyShape.setOrigin({enemyShape.getSize().x / 2, enemyShape.getSize().y / 2});
     }
