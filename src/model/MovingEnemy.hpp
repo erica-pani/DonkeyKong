@@ -9,6 +9,6 @@ public:
     MovingEnemy(sf::Vector2f position);
     ~MovingEnemy() override;
 
-    void update(float dt, std::vector<Girder>& girders) override;
+    void update(float dt, const std::vector<Girder>& girders) override;
 };
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Girder.hpp"
 
 #include <SFML/System/Vector2.hpp>
@@ -22,7 +24,7 @@ public:
     void set_velocity(sf::Vector2f newVelocity);
     const Girder* get_current_girder();
 
-    virtual void update(float dt, std::vector<Girder>& girders);
+    virtual void update(float dt, const std::vector<Girder>& girders);
 
     void check_girder_intersection(const std::vector<Girder>& girders);
 };

@@ -12,6 +12,7 @@ set(ModelSources
 set(ControlSources
     ${CMAKE_CURRENT_SOURCE_DIR}/control/Game.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/control/BarrelControl.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/control/EnemyControl.cpp
     )
 
 # View

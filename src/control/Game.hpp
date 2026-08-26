@@ -9,6 +9,7 @@
 #include "../model/Ladder.hpp"
 #include "../view/Layer.hpp"
 #include "BarrelControl.hpp"
+#include "EnemyControl.hpp"
 #include "../model/Player.hpp"
 #include "../model/MovingEnemy.hpp"
 
@@ -47,10 +48,9 @@ private:
     std::vector<Girder> girders;
     std::vector<Ladder> ladders;
     BarrelControl barrel_control;
+    EnemyControl enemy_control;
 
     Player player;
-
-    MovingEnemy enemy;
 };
 
 #endif

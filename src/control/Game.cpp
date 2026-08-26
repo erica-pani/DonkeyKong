@@ -11,8 +11,8 @@ Game::Game() :
     girders(),
     ladders(),
     player({100, -190}),
-    enemy({300, -190}),
-    barrel_control(game_layer) {
+    barrel_control(game_layer),
+    enemy_control(game_layer) {
 
         if (!background_texture.loadFromFile("assets/img/IMG_0127.jpg")) {
            
@@ -33,6 +33,7 @@ Game::Game() :
         ladders = build_ladders(girders);
         player.setGirder(girders[3]);
         barrel_control.spawn(girders);
+        enemy_control.spawn(girders);
     
         // limit frame rate
         window.setFramerateLimit(constants::FRAME_RATE);
@@ -154,7 +155,7 @@ void Game::update(float time_passed) {
         return;
     }
     barrel_control.update(time_passed, girders);
-    enemy.update(time_passed, girders);
+    enemy_control.update(time_passed, girders);
     player.update(time_passed, girders);
 }
 
@@ -174,9 +175,8 @@ void Game::draw() {
 
     game_layer.add_to_layer(player.getShape());
 
-    game_layer.add_to_layer(enemy.get_shape());
-
     barrel_control.draw();
+    enemy_control.draw();
     game_layer.draw();
 
     window.display();

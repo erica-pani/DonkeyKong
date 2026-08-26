@@ -17,7 +17,7 @@ Enemy::~Enemy() {
 
 }
 
-void Enemy::update(float dt, std::vector<Girder>& girders) {}
+void Enemy::update(float dt, const std::vector<Girder>& girders) {}
 
 sf::Vector2f Enemy::get_postion() const{
     return position;
@@ -45,14 +45,14 @@ void Enemy::set_velocity(sf::Vector2f newVelo) {
 }
 
 void Enemy::check_girder_intersection(const std::vector<Girder>& girders) {
-    float playerHeight = enemyShape.getSize().y / 2;
+    float playerHeight = enemyShape.getSize().y;
     for (const Girder& girder : girders) {
         if (!girder.covers_x(position.x)) {
             continue;
         }
         float surface = girder.surface_y_at(position.x);
-        if (position.y + playerHeight >= surface && surface >= position.y + playerHeight / 1.5f) {
-            position.y = surface - playerHeight;
+        if (position.y + playerHeight >= surface && surface >= position.y) {
+            position.y = surface - playerHeight / 2;
             enemyShape.setPosition(position);
             current_girder = &girder;
             return;
