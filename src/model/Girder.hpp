@@ -24,7 +24,8 @@ public:
     int downhill_sign() const;
 
     sf::Vector2f high_end() const;
-    sf::Vector2f low_end() const;
+    sf::Vector2f get_left() const;
+    sf::Vector2f get_right() const;
     const sf::RectangleShape& get_shape() const;
 
 private:

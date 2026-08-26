@@ -10,6 +10,8 @@ set(ModelSources
     ${CMAKE_SOURCE_DIR}/src/model/Barrel.cpp
     ${CMAKE_SOURCE_DIR}/src/model/Ladder.cpp
     ${CMAKE_SOURCE_DIR}/src/model/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/model/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/model/MovingEnemy.cpp
     )
 
 set(ViewSources

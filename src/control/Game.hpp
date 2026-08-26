@@ -10,6 +10,7 @@
 #include "../view/Layer.hpp"
 #include "BarrelControl.hpp"
 #include "../model/Player.hpp"
+#include "../model/MovingEnemy.hpp"
 
 // Game class
 class Game {
@@ -48,6 +49,8 @@ private:
     BarrelControl barrel_control;
 
     Player player;
+
+    MovingEnemy enemy;
 };
 
 #endif

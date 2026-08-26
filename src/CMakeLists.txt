@@ -4,6 +4,8 @@ set(ModelSources
     ${CMAKE_CURRENT_SOURCE_DIR}/model/Barrel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/model/Ladder.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/model/Player.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/Enemy.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/MovingEnemy.cpp
     )
 
 # Controller

@@ -44,9 +44,12 @@ sf::Vector2f Girder::high_end() const {
     return (left.y <= right.y) ? left : right;
 }
 
-sf::Vector2f Girder::low_end() const {
-    // the lower end has the smaller y
-    return (left.y >= right.y) ? left : right;
+sf::Vector2f Girder::get_left() const {
+    return left;
+}
+
+sf::Vector2f Girder::get_right() const {
+    return right;
 }
 
 const sf::RectangleShape& Girder::get_shape() const {
