@@ -1,9 +1,9 @@
-#include "MovingEnemy.hpp"
+#include "Ghost.hpp"
 
 #include <random>
 
-MovingEnemy::MovingEnemy(sf::Vector2f position) :
-    Enemy(position),
+Ghost::Ghost(sf::Vector2f position, const sf::Texture& tex) :
+    Enemy(position, tex),
     right_boundary(position.x + movement_range),
     left_boundary(position.x - movement_range) {
         if (get_current_girder() != nullptr) {
@@ -21,28 +21,29 @@ MovingEnemy::MovingEnemy(sf::Vector2f position) :
         std::bernoulli_distribution coin_flip(0.5);
         
         if (coin_flip(gen)){
-            set_velocity({-120.0f, 0.0f});
+            set_velocity({-100.0f, 0.0f});
         } else {
-            set_velocity({120.0f, 0.0f});
+            set_velocity({100.0f, 0.0f});
         }
         
     }
    
-MovingEnemy::~MovingEnemy() {
+Ghost::~Ghost() {
 }
 
-void MovingEnemy::update(float dt, const std::vector<Girder>& girders) {
+void Ghost::update(float dt, const std::vector<Girder>& girders) {
 
     if (get_current_girder() != nullptr) {
+        float currentHeight = get_shape().getGlobalBounds().size.y;
 
         if (get_postion().x >= right_boundary) {
-            set_velocity({-120.0f, 0.0f});
+            set_velocity({-100.0f, 0.0f});
         } else if (get_postion().x <= left_boundary) {
-            set_velocity({120.0f, 0.0f});
+            set_velocity({100.0f, 0.0f});
         }
     
         set_postion({get_postion().x + get_velocity().x * dt,
-            get_current_girder()->surface_y_at(get_postion().x) - get_shape().getSize().y / 2.0f});
+            get_current_girder()->surface_y_at(get_postion().x) - currentHeight / 2.0f});
 
     } else if (get_current_girder() == nullptr) {
 

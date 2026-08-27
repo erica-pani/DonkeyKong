@@ -11,7 +11,6 @@
 #include "BarrelControl.hpp"
 #include "EnemyControl.hpp"
 #include "../model/Player.hpp"
-#include "../model/MovingEnemy.hpp"
 
 // Game class
 class Game {
@@ -21,6 +20,8 @@ public:
     Game();
 
     void start();
+
+    bool isAlive();
 
 private:
     // processes user input, returns true if window has been closed

@@ -150,8 +150,16 @@ bool Game::input() {
     return false;
 }
 
+bool Game::isAlive() {
+    if (barrel_control.check_barrel_intersection(player) ||
+            enemy_control.check_intersection(player)) {
+        return false;
+    }
+    return true;
+}
+
 void Game::update(float time_passed) {
-    if (barrel_control.check_barrel_intersection(player)) {
+    if (!isAlive()) {
         return;
     }
     barrel_control.update(time_passed, girders);

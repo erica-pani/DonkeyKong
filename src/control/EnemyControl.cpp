@@ -1,13 +1,20 @@
 #include "EnemyControl.hpp"
-#include "../model/MovingEnemy.hpp"
+#include "../model/Ghost.hpp"
 
 #include <random>
+#include <algorithm>
+#include <thread>
 
 EnemyControl::EnemyControl(Layer& layer) :
     enemies(),
-    layer(layer) {}
+    layer(layer) {
+        if (!enemyTexture.loadFromFile("assets/img/enemy_pngs/ghost_texture.png")) {
+        throw std::runtime_error("Fehler beim Laden der Gegnersprite-Textur!");
+        }
+    }
 
-EnemyControl::~EnemyControl() {}
+EnemyControl::~EnemyControl() {
+}
 
 void EnemyControl::spawn(const std::vector<Girder>& girders) {
     std::random_device rd;
@@ -20,8 +27,8 @@ void EnemyControl::spawn(const std::vector<Girder>& girders) {
             
             float positionX = get_random_position(200.0f, 400.0f);
 
-            enemies.emplace_back(std::make_unique<MovingEnemy>(sf::Vector2f(positionX,
-                girder.surface_y_at(positionX))));
+            enemies.emplace_back(std::make_unique<Ghost>(sf::Vector2f(positionX,
+                girder.surface_y_at(positionX)), enemyTexture));
         }
     }
     
@@ -39,8 +46,21 @@ void EnemyControl::draw() {
     }
 }
 
-bool EnemyControl::check_intersection() {
-    return true;
+bool EnemyControl::check_intersection(Player& player) {
+    sf::RectangleShape player_shape = player.getShape();
+    for (auto& enemy : enemies) {
+        if (check_enemy_collision(player_shape, enemy->get_shape())) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool EnemyControl::check_enemy_collision(const sf::RectangleShape& playerShape, const sf::Sprite& enemyShape) {
+    sf::FloatRect playerBounds = playerShape.getGlobalBounds();
+    sf::FloatRect enemyBounds = enemyShape.getGlobalBounds(); 
+
+    return playerBounds.findIntersection(enemyBounds).has_value();
 }
 
 float EnemyControl::get_random_position(float miin, float maax) {
@@ -52,4 +72,13 @@ float EnemyControl::get_random_position(float miin, float maax) {
 
     std::uniform_real_distribution<float> distrib(min, max);
     return distrib(gen);
+}
+
+sf::Texture EnemyControl::getTexture() {
+    sf::Texture tex;
+    if (!tex.loadFromFile("assets/img/enemy_pngs/ghost_texture.png")) {
+        throw std::runtime_error("Fehler beim Laden von: ");
+    }
+
+    return tex;
 }
