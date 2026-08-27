@@ -1,7 +1,8 @@
 #include "Ladder.hpp"
 
-Ladder::Ladder(sf::Vector2f position, float width, float height, int numRungs) :
-    position(position) {
+Ladder::Ladder(sf::Vector2f position, float width, float height, int numRungs, const Girder& girder) :
+    position(position),
+    origin_girder(&girder) {
 
         assert(numRungs > 1);
 
@@ -50,4 +51,12 @@ bool Ladder::covers_x(float xPosition) {
 
 float Ladder::get_center() const {
     return getPosition().x + (get_ladder_width() / 2.f);
+}
+
+void Ladder::setGirder(Girder& girder) {
+    origin_girder = &girder;
+}
+
+const Girder* Ladder::get_girder_pointer() const{
+    return origin_girder;
 }

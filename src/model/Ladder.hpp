@@ -14,13 +14,18 @@ private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     float get_ladder_width() const;
+
+    const Girder* origin_girder;
     
 public:
-    Ladder(sf::Vector2f position, float width, float height, int numRungs);
+    Ladder(sf::Vector2f position, float width, float height, int numRungs, const Girder& girder);
     ~Ladder();
 
     bool covers_x(float xPosition);
 
     float get_center() const;
+
+    void setGirder(Girder& girder);
+    const Girder* get_girder_pointer() const;
 };
 
