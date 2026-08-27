@@ -1,2 +1,5 @@
 ghost_texture:
 https://www.vecteezy.com/free-png/pixel-monster
+
+player_sprites:
+https://craftpix.net/download/56976/
