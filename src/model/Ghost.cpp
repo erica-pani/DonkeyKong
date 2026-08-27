@@ -21,9 +21,9 @@ Ghost::Ghost(sf::Vector2f position, const sf::Texture& tex) :
         std::bernoulli_distribution coin_flip(0.5);
         
         if (coin_flip(gen)){
-            set_velocity({-100.0f, 0.0f});
+            set_velocity({-movement_speed, 0.0f});
         } else {
-            set_velocity({100.0f, 0.0f});
+            set_velocity({movement_speed, 0.0f});
         }
         
     }
@@ -37,9 +37,9 @@ void Ghost::update(float dt, const std::vector<Girder>& girders) {
         float currentHeight = get_shape().getGlobalBounds().size.y;
 
         if (get_postion().x >= right_boundary) {
-            set_velocity({-100.0f, 0.0f});
+            set_velocity({-movement_speed, 0.0f});
         } else if (get_postion().x <= left_boundary) {
-            set_velocity({100.0f, 0.0f});
+            set_velocity({movement_speed, 0.0f});
         }
     
         set_postion({get_postion().x + get_velocity().x * dt,

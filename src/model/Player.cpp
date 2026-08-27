@@ -152,3 +152,7 @@ void Player::check_girder_intersection(const std::vector<Girder>& girders) {
 void Player::setGirder(const Girder& girder) {
     current_girder = &girder;
 }
+
+const Girder* Player::getGirder() const {
+    return current_girder;
+}

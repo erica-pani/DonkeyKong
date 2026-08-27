@@ -40,6 +40,7 @@ public:
     void update(float dt, const std::vector<Girder>& girders);
     void check_girder_intersection(const std::vector<Girder>& girders);
     void setGirder(const Girder& girder);
+    const Girder* getGirder() const;
 
 };
 

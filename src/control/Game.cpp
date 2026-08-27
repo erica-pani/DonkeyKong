@@ -31,9 +31,9 @@ Game::Game() :
 
         girders = build_girders();
         ladders = build_ladders(girders);
-        player.setGirder(girders[3]);
         barrel_control.spawn(girders);
         enemy_control.spawn(girders);
+        girder_to_win = &girders.back();
     
         // limit frame rate
         window.setFramerateLimit(constants::FRAME_RATE);
@@ -50,6 +50,7 @@ std::vector<Girder> Game::build_girders() {
     girders.emplace_back(sf::Vector2f{80, -360},  sf::Vector2f{540, -400});
     girders.emplace_back(sf::Vector2f{40, -300},  sf::Vector2f{520, -260});
     girders.emplace_back(sf::Vector2f{80, -160},  sf::Vector2f{560, -200});
+    girders.emplace_back(sf::Vector2f{20, -500}, sf::Vector2f{80, -500});
     return girders;
 }
 
@@ -150,6 +151,13 @@ bool Game::input() {
     return false;
 }
 
+bool Game::goal_reached() {
+    if (player.getGirder() == girder_to_win) {
+        return true;
+    }
+    return false;
+}
+
 bool Game::isAlive() {
     if (barrel_control.check_barrel_intersection(player) ||
             enemy_control.check_intersection(player)) {
@@ -159,7 +167,7 @@ bool Game::isAlive() {
 }
 
 void Game::update(float time_passed) {
-    if (!isAlive()) {
+    if (!isAlive() || goal_reached()) {
         return;
     }
     barrel_control.update(time_passed, girders);

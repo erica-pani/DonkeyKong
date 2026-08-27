@@ -60,7 +60,14 @@ bool EnemyControl::check_enemy_collision(const sf::RectangleShape& playerShape, 
     sf::FloatRect playerBounds = playerShape.getGlobalBounds();
     sf::FloatRect enemyBounds = enemyShape.getGlobalBounds(); 
 
-    return playerBounds.findIntersection(enemyBounds).has_value();
+    sf::Vector2f margin{6.0f, 6.0f};
+
+    sf::FloatRect shrinkedEnemyBounds(
+            enemyBounds.position + margin,           
+            enemyBounds.size - (margin * 2.0f)
+        );
+
+    return playerBounds.findIntersection(shrinkedEnemyBounds).has_value();
 }
 
 float EnemyControl::get_random_position(float miin, float maax) {

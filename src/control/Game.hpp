@@ -21,8 +21,6 @@ public:
 
     void start();
 
-    bool isAlive();
-
 private:
     // processes user input, returns true if window has been closed
     bool input();
@@ -32,6 +30,10 @@ private:
 
     // draws the scene
     void draw();
+
+    bool isAlive();
+
+    bool goal_reached();
 
     // build the zig-zag of alternating sloped girders that make up the stage
     static std::vector<Girder> build_girders();
@@ -50,6 +52,7 @@ private:
     std::vector<Ladder> ladders;
     BarrelControl barrel_control;
     EnemyControl enemy_control;
+    const Girder* girder_to_win;
 
     Player player;
 };
