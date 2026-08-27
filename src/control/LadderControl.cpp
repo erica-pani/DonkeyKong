@@ -69,6 +69,7 @@ void LadderControl::add_ladder(
         sf::Vector2f{x, yTop},
         ladderWidth,
         ladderHeight,
-        numRungs
+        numRungs,
+        lower
     );
 }
