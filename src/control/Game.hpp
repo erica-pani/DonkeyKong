@@ -8,9 +8,9 @@
 #include "../model/Girder.hpp"
 #include "../model/Ladder.hpp"
 #include "../view/Layer.hpp"
+#include "LadderControl.hpp"
 #include "BarrelControl.hpp"
 #include "../model/Player.hpp"
-
 // Game class
 class Game {
 
@@ -46,6 +46,7 @@ private:
     std::vector<Girder> girders;
     std::vector<Ladder> ladders;
     BarrelControl barrel_control;
+    LadderControl ladder_control;
 
     Player player;
 };

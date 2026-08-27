@@ -26,6 +26,9 @@ public:
     sf::Vector2f high_end() const;
     sf::Vector2f low_end() const;
     const sf::RectangleShape& get_shape() const;
+    
+    float min_x() const;
+    float max_x() const;
 
 private:
     sf::Vector2f left;
