@@ -1,17 +1,10 @@
-LadderControl für Leitern um zu platzieren (Luca)
-- Hat alle Leitern(vector)
-- bestimmt die Spawnpunnkte wie ist noch nicht geklärt
 
-BarrelControl
-
-Player (Luca)
-- brauch Leben
-- wenn Speiler aus bild fällt game over oder Leben weniger
-
-Ladder
-
-Game
-- Ziel für Player wenn erreicht den Barrel spwan Speed anpassen und leitern neu platzieren
-
+- wenn Ziel neu randomizen spawn speed anpassen und unten spwanen
+- wenn runterfällt dann tot 
+- wenn tot dann game over
+- readme
+- kommentare für methoden 
+- draw Mthode für LadderControl
+- Grafiken
 
 test für Player.move und Player.update ubd irgendwas anderes
