@@ -6,6 +6,8 @@
 
 #include "Constants.hpp"
 
+#include <algorithm>
+
 Girder::Girder(sf::Vector2f left, sf::Vector2f right) :
     left(left),
     right(right),
@@ -54,4 +56,12 @@ sf::Vector2f Girder::get_right() const {
 
 const sf::RectangleShape& Girder::get_shape() const {
     return shape;
+}
+
+float Girder::min_x() const {
+    return std::min(left.x, right.x);
+}
+
+float Girder::max_x() const {
+    return std::max(left.x, right.x);
 }

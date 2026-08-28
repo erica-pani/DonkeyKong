@@ -8,10 +8,10 @@
 #include "../model/Girder.hpp"
 #include "../model/Ladder.hpp"
 #include "../view/Layer.hpp"
+#include "LadderControl.hpp"
 #include "BarrelControl.hpp"
 #include "EnemyControl.hpp"
 #include "../model/Player.hpp"
-
 // Game class
 class Game {
 
@@ -53,6 +53,7 @@ private:
     BarrelControl barrel_control;
     EnemyControl enemy_control;
     const Girder* girder_to_win;
+    LadderControl ladder_control;
 
     Player player;
 };

@@ -27,6 +27,9 @@ public:
     sf::Vector2f get_left() const;
     sf::Vector2f get_right() const;
     const sf::RectangleShape& get_shape() const;
+    
+    float min_x() const;
+    float max_x() const;
 
 private:
     sf::Vector2f left;

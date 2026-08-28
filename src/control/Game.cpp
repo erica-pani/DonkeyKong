@@ -10,6 +10,7 @@ Game::Game() :
     game_layer(window),
     girders(),
     ladders(),
+    ladder_control(),
     player({100, -190}),
     barrel_control(game_layer),
     enemy_control(game_layer) {
@@ -30,9 +31,10 @@ Game::Game() :
 
 
         girders = build_girders();
-        ladders = build_ladders(girders);
+        ladders = ladder_control.generate_ladders(girders);
         barrel_control.spawn(girders);
         enemy_control.spawn(girders);
+        girders.emplace_back(sf::Vector2f{20, -500}, sf::Vector2f{80, -500});
         girder_to_win = &girders.back();
     
         // limit frame rate
@@ -50,57 +52,9 @@ std::vector<Girder> Game::build_girders() {
     girders.emplace_back(sf::Vector2f{80, -360},  sf::Vector2f{540, -400});
     girders.emplace_back(sf::Vector2f{40, -300},  sf::Vector2f{520, -260});
     girders.emplace_back(sf::Vector2f{80, -160},  sf::Vector2f{560, -200});
-    girders.emplace_back(sf::Vector2f{20, -500}, sf::Vector2f{80, -500});
     return girders;
 }
 
-std::vector<Ladder> Game::build_ladders(const std::vector<Girder>& girders) {
-    std::vector<Ladder> ladders;
-    
-    float ladderWidth = 40.f;
-
-    float xPositon = 200;
-
-    float yTop = girders[2].surface_y_at(xPositon);
-
-    float yBottom = girders[3].surface_y_at(xPositon);
-
-    float ladderHeight = std::abs(yBottom - yTop);
-
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[3]);
-
-    xPositon = 100;
-
-    yTop = girders[1].surface_y_at(xPositon);
-
-    yBottom = girders[2].surface_y_at(xPositon);
-
-    ladderHeight = std::abs(yBottom - yTop);
-
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[2]);
-
-    xPositon = 400;
-
-    yTop = girders[1].surface_y_at(xPositon);
-
-    yBottom = girders[2].surface_y_at(xPositon);
-
-    ladderHeight = std::abs(yBottom - yTop);
-
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[2]);
-
-    xPositon = 150;
-
-    yTop = girders[0].surface_y_at(xPositon);
-
-    yBottom = girders[1].surface_y_at(xPositon);
-
-    ladderHeight = std::abs(yBottom - yTop);
-
-    ladders.emplace_back(sf::Vector2f{xPositon, yTop}, ladderWidth, ladderHeight, 5, girders[1]);
-
-    return ladders;
-}
 
 void Game::start() {
     // The clock is needed to control the speed of movement

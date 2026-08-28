@@ -4,6 +4,7 @@ set(ControlSources
     ${CMAKE_SOURCE_DIR}/src/control/Game.cpp
     ${CMAKE_SOURCE_DIR}/src/control/BarrelControl.cpp
     ${CMAKE_SOURCE_DIR}/src/control/EnemyControl.cpp
+    ${CMAKE_SOURCE_DIR}/src/control/LadderControl.cpp
     )
 
 set(ModelSources
