@@ -10,6 +10,7 @@
 #include "../view/Layer.hpp"
 #include "LadderControl.hpp"
 #include "BarrelControl.hpp"
+#include "EnemyControl.hpp"
 #include "../model/Player.hpp"
 // Game class
 class Game {
@@ -30,6 +31,10 @@ private:
     // draws the scene
     void draw();
 
+    bool isAlive();
+
+    bool goal_reached();
+
     // build the zig-zag of alternating sloped girders that make up the stage
     static std::vector<Girder> build_girders();
 
@@ -39,13 +44,13 @@ private:
 
     // view area and layers
     sf::View view;
-    sf::Texture background_texture;
-    std::optional<sf::Sprite> background_sprite;
     Layer game_layer;
 
     std::vector<Girder> girders;
     std::vector<Ladder> ladders;
     BarrelControl barrel_control;
+    EnemyControl enemy_control;
+    const Girder* girder_to_win;
     LadderControl ladder_control;
 
     Player player;

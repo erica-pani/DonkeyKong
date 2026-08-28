@@ -3,6 +3,7 @@
 #include <SFML/Window/Keyboard.hpp>
 
 #include "../model/Constants.hpp"
+#include <iostream>
 
 Game::Game() :
     window(sf::VideoMode({constants::VIEW_WIDTH, constants::VIEW_HEIGHT}), "Donkey Kong"),
@@ -12,26 +13,14 @@ Game::Game() :
     ladders(),
     ladder_control(),
     player({100, -190}),
-    barrel_control(game_layer) {
-
-        if (!background_texture.loadFromFile("assets/img/IMG_0127.jpg")) {
-           
-        }
-        
-        background_sprite.emplace(background_texture);
-
-        background_sprite -> setPosition({0, -constants::VIEW_HEIGHT});
-
-        sf::Vector2u tex_size = background_texture.getSize();
-        background_sprite -> setScale({
-        constants::VIEW_WIDTH / static_cast<float>(tex_size.x),
-        constants::VIEW_HEIGHT / static_cast<float>(tex_size.y)
-        });
+    barrel_control(game_layer),
+    enemy_control(game_layer) {
 
         girders = build_girders();
         ladders = ladder_control.generate_ladders(girders);
-        player.setGirder(girders[3]);
         barrel_control.spawn(girders);
+        girder_to_win = &girders.back();
+        enemy_control.spawn(girders, girder_to_win);
     
         // limit frame rate
         window.setFramerateLimit(constants::FRAME_RATE);
@@ -48,6 +37,7 @@ std::vector<Girder> Game::build_girders() {
     girders.emplace_back(sf::Vector2f{80, -360},  sf::Vector2f{540, -400});
     girders.emplace_back(sf::Vector2f{40, -300},  sf::Vector2f{520, -260});
     girders.emplace_back(sf::Vector2f{80, -160},  sf::Vector2f{560, -200});
+    girders.emplace_back(sf::Vector2f{20, -500}, sf::Vector2f{80, -500});
     return girders;
 }
 
@@ -101,11 +91,27 @@ bool Game::input() {
     return false;
 }
 
+bool Game::goal_reached() {
+    if (player.getGirder() == girder_to_win) {
+        return true;
+    }
+    return false;
+}
+
+bool Game::isAlive() {
+    if (barrel_control.check_barrel_intersection(player) ||
+            enemy_control.check_intersection(player)) {
+        return false;
+    }
+    return true;
+}
+
 void Game::update(float time_passed) {
-    if (barrel_control.check_barrel_intersection(player)) {
+    if (!isAlive() || goal_reached()) {
         return;
     }
     barrel_control.update(time_passed, girders);
+    enemy_control.update(time_passed, girders);
     player.update(time_passed, girders);
 }
 
@@ -126,6 +132,7 @@ void Game::draw() {
     game_layer.add_to_layer(player.getShape());
 
     barrel_control.draw();
+    enemy_control.draw();
     game_layer.draw();
 
     window.display();

@@ -3,16 +3,6 @@
 #include <iostream>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-namespace {
-    sf::Texture loadTextureSafely() {
-        sf::Texture tex;
-        if (!tex.loadFromFile("assets/player_sprite_trans.png")) {
-            std::cerr << "Fehler beim Erstellen der Textur aus dem Bild!\n";
-        }
-        
-        return tex;
-    }
-}
 
 Player::Player(sf::Vector2f position) : 
     playerShape(),
@@ -21,11 +11,8 @@ Player::Player(sf::Vector2f position) :
     velocity({0, 0}),
     current_girder(nullptr),
     isJumping(false),
-    isClimbing(false),
-    playerTexture(loadTextureSafely()) ,
-    playerSprite(playerTexture){
-        //playerSprite.scale({0.22f, 0.22f});
-        //playerSprite.setPosition(position);
+    isClimbing(false){
+        
         playerShape.setSize({playerWidth, playerHeight});
         playerShape.setOrigin({playerWidth / 2.0f, 0.0f});
         playerShape.setPosition(position);
@@ -33,10 +20,6 @@ Player::Player(sf::Vector2f position) :
     }
 
 Player::~Player() {}
-
-const sf::Sprite& Player::getSprite() const {
-    return playerSprite;
-}
 
 sf::RectangleShape Player::getShape() {
     return playerShape;
@@ -128,7 +111,6 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
         
     } else if (current_girder != nullptr) {
         position.y = current_girder->surface_y_at(position.x) - playerHeight;
-        //position.y += velocity.y * dt;
     }
     check_girder_intersection(girders);
     playerShape.setPosition(position);
@@ -151,4 +133,8 @@ void Player::check_girder_intersection(const std::vector<Girder>& girders) {
 
 void Player::setGirder(const Girder& girder) {
     current_girder = &girder;
+}
+
+const Girder* Player::getGirder() const {
+    return current_girder;
 }
