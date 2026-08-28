@@ -2,10 +2,10 @@
 
 class Ghost : public Enemy {
 private:
-    float movement_range = 50.0f;
+    float movement_range = 100.0f;
     float left_boundary;
     float right_boundary;
-    float movement_speed = 80.0f;
+    float movement_speed = 70.0f;
 public:
     Ghost(sf::Vector2f position, const sf::Texture& tex);
     ~Ghost() override;

@@ -35,6 +35,8 @@ private:
 
     bool goal_reached();
 
+    void restart_and_randomize();
+
     // build the zig-zag of alternating sloped girders that make up the stage
     static std::vector<Girder> build_girders();
 

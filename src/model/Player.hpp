@@ -27,7 +27,8 @@ public:
     Player(sf::Vector2f position);
     ~Player();
 
-    sf::RectangleShape getShape();
+    void setPosition(sf::Vector2f newPosition);
+    sf::RectangleShape& getShape();
     
     void move(Direction direction);
     void jump();

@@ -72,3 +72,15 @@ void BarrelControl::draw() {
         layer.add_to_layer(barrel->get_shape());
     }
 }
+
+void BarrelControl::clear_barrels() {
+    barrels.clear();
+}
+
+void BarrelControl::set_spawn_interval(float interval) {
+    spawn_interval = interval;
+}
+
+float BarrelControl::get_spawn_interval() {
+    return spawn_interval;
+}

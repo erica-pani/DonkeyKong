@@ -19,7 +19,9 @@ public:
     void update(float dt, const std::vector<Girder>& girders);
     void draw();
     void set_spawn_interval(float interval);
+    float get_spawn_interval();
     bool check_barrel_intersection(Player& player);
+    void clear_barrels();
 
 private:
     Layer& layer;

@@ -91,6 +91,14 @@ bool Game::input() {
     return false;
 }
 
+void Game::restart_and_randomize() {
+    player.setPosition({100, -190});
+    ladders = ladder_control.generate_ladders(girders);
+    barrel_control.clear_barrels();
+    barrel_control.set_spawn_interval(barrel_control.get_spawn_interval() - 0.25f);
+    enemy_control.spawn(girders, girder_to_win);
+}
+
 bool Game::goal_reached() {
     if (player.getGirder() == girder_to_win) {
         return true;
@@ -107,12 +115,15 @@ bool Game::isAlive() {
 }
 
 void Game::update(float time_passed) {
-    if (!isAlive() || goal_reached()) {
+    if (!isAlive()) {
         return;
+    }
+    if (goal_reached() && isAlive()) {
+        restart_and_randomize();
     }
     barrel_control.update(time_passed, girders);
     enemy_control.update(time_passed, girders);
-    player.update(time_passed, girders);
+    player.update(time_passed, girders); 
 }
 
 void Game::draw() {

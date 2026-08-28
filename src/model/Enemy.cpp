@@ -9,7 +9,7 @@ Enemy::Enemy(sf::Vector2f position, const sf::Texture& tex):
     enemyTexture(tex),
     enemySprite(enemyTexture) {
 
-        sf::Vector2f targetSize{42.0f, 45.0f};
+        sf::Vector2f targetSize{35.0f, 38.0f};
         enemySprite.setOrigin({enemyTexture.getSize().x / 2.0f, enemyTexture.getSize().y / 2.0f});
 
         sf::Vector2f scaleFactor{

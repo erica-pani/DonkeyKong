@@ -21,7 +21,7 @@ Player::Player(sf::Vector2f position) :
 
 Player::~Player() {}
 
-sf::RectangleShape Player::getShape() {
+sf::RectangleShape& Player::getShape() {
     return playerShape;
 }
 
@@ -137,4 +137,10 @@ void Player::setGirder(const Girder& girder) {
 
 const Girder* Player::getGirder() const {
     return current_girder;
+}
+
+void Player::setPosition(sf::Vector2f newPosition) {
+    current_girder = nullptr;
+    position = newPosition;
+    playerShape.setPosition(newPosition);
 }
