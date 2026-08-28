@@ -3,6 +3,7 @@
 #include <SFML/Window/Keyboard.hpp>
 
 #include "../model/Constants.hpp"
+#include <iostream>
 
 Game::Game() :
     window(sf::VideoMode({constants::VIEW_WIDTH, constants::VIEW_HEIGHT}), "Donkey Kong"),
@@ -15,27 +16,11 @@ Game::Game() :
     barrel_control(game_layer),
     enemy_control(game_layer) {
 
-        if (!background_texture.loadFromFile("assets/img/IMG_0127.jpg")) {
-           
-        }
-        
-        background_sprite.emplace(background_texture);
-
-        background_sprite -> setPosition({0, -constants::VIEW_HEIGHT});
-
-        sf::Vector2u tex_size = background_texture.getSize();
-        background_sprite -> setScale({
-        constants::VIEW_WIDTH / static_cast<float>(tex_size.x),
-        constants::VIEW_HEIGHT / static_cast<float>(tex_size.y)
-        });
-
-
         girders = build_girders();
         ladders = ladder_control.generate_ladders(girders);
         barrel_control.spawn(girders);
-        enemy_control.spawn(girders);
-        girders.emplace_back(sf::Vector2f{20, -500}, sf::Vector2f{80, -500});
         girder_to_win = &girders.back();
+        enemy_control.spawn(girders, girder_to_win);
     
         // limit frame rate
         window.setFramerateLimit(constants::FRAME_RATE);
@@ -52,6 +37,7 @@ std::vector<Girder> Game::build_girders() {
     girders.emplace_back(sf::Vector2f{80, -360},  sf::Vector2f{540, -400});
     girders.emplace_back(sf::Vector2f{40, -300},  sf::Vector2f{520, -260});
     girders.emplace_back(sf::Vector2f{80, -160},  sf::Vector2f{560, -200});
+    girders.emplace_back(sf::Vector2f{20, -500}, sf::Vector2f{80, -500});
     return girders;
 }
 

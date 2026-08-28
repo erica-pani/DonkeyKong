@@ -44,8 +44,6 @@ private:
 
     // view area and layers
     sf::View view;
-    sf::Texture background_texture;
-    std::optional<sf::Sprite> background_sprite;
     Layer game_layer;
 
     std::vector<Girder> girders;

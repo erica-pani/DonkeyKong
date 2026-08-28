@@ -8,8 +8,6 @@
 class Player
 {
 private:
-    sf::Texture playerTexture;
-    sf::Sprite playerSprite;
     sf::RectangleShape playerShape;
     std::vector<sf::IntRect> running_frames;
 
@@ -29,7 +27,6 @@ public:
     Player(sf::Vector2f position);
     ~Player();
 
-    const sf::Sprite& getSprite() const;
     sf::RectangleShape getShape();
     
     void move(Direction direction);

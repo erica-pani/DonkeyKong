@@ -16,14 +16,14 @@ EnemyControl::EnemyControl(Layer& layer) :
 EnemyControl::~EnemyControl() {
 }
 
-void EnemyControl::spawn(const std::vector<Girder>& girders) {
+void EnemyControl::spawn(const std::vector<Girder>& girders, const Girder* girder_to_win) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::bernoulli_distribution coin_flip(0.5);
 
     for (const auto& girder : girders) {
 
-        if (coin_flip(gen)) {
+        if (coin_flip(gen) && girder_to_win != &girder) {
             
             float positionX = get_random_position(200.0f, 400.0f);
 

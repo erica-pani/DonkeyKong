@@ -16,7 +16,7 @@ public:
     EnemyControl(Layer& layer);
     ~EnemyControl();
 
-    void spawn(const std::vector<Girder>& girders);
+    void spawn(const std::vector<Girder>& girders, const Girder* girder_to_win);
     void update(float dt, const std::vector<Girder>& girders);
     void draw();
     bool check_intersection(Player& player);
