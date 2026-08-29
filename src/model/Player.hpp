@@ -15,6 +15,7 @@ class Player
     sf::RectangleShape playerShape;
     std::vector<sf::IntRect> running_frames;
     std::vector<sf::IntRect> jumping_frames;
+    std::vector<sf::IntRect> climbing_frames;
 
 
     sf::Vector2f position;

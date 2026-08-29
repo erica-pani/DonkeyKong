@@ -17,8 +17,8 @@ Player::Player(sf::Vector2f position) :
     isClimbing(false),
     landingTimer(0.0f) {
 
-    if (!runningTexture.loadFromFile("assets/img/player_sprites/WalkSprite1.png")) {
-        std::cerr << "Fehler beim Laden von assets/WalkSprite1.png!\n";
+    if (!runningTexture.loadFromFile("assets/img/player_sprites/Player_Sprite.png")) {
+        std::cerr << "Fehler beim Laden von assets/Player_Sprite.png!\n";
     }
 
     sf::Vector2u textureSize = runningTexture.getSize();
@@ -30,6 +30,10 @@ Player::Player(sf::Vector2f position) :
     for (int i = 0; i < 2; ++i) {
         jumping_frames.push_back(sf::IntRect({i * FRAME_WIDTH, FRAME_HEIGHT}, {FRAME_WIDTH, FRAME_HEIGHT}));
     }
+    for (int i = 0; i < 4; ++i) {
+        climbing_frames.push_back(sf::IntRect({i * FRAME_WIDTH, FRAME_HEIGHT*2}, {FRAME_WIDTH, FRAME_HEIGHT}));
+    }
+
 
     playerSprite.setTextureRect(running_frames[0]);
     playerSprite.setOrigin({16.0f / 2.0f, 0.0f});
@@ -102,12 +106,28 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
     float oldPosition = position.x;
     position.x += velocity.x * dt;
 
-    const float frameDuration = 0.12f; // Smaller value = faster animation
+    const float frameDuration = 0.12f;
 
-    if (velocity.x != 0 && current_girder != nullptr && !isJumping && !isClimbing && !isLanding) {
+    // Animations-Logik nach Priorität getrennt
+    if (isLanding) {
+        landingTimer -= dt;
+        playerSprite.setTextureRect(jumping_frames[1]);
+        if (landingTimer <= 0.0f) {
+            isLanding = false;
+        }
+    } else if (isJumping) {
+        playerSprite.setTextureRect(jumping_frames[0]);
+    } else if (isClimbing) {
         animationTimer += dt;
         if (animationTimer >= frameDuration) {
-            animationTimer -= frameDuration; // Preserves leftover time for smoother playback
+            animationTimer -= frameDuration;
+            currentFrame = (currentFrame + 1) % climbing_frames.size();
+            playerSprite.setTextureRect(climbing_frames[currentFrame]);
+        }
+    } else if (velocity.x != 0 && current_girder != nullptr) {
+        animationTimer += dt;
+        if (animationTimer >= frameDuration) {
+            animationTimer -= frameDuration;
             currentFrame = (currentFrame + 1) % running_frames.size();
             playerSprite.setTextureRect(running_frames[currentFrame]);
         }
@@ -118,7 +138,6 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
     }
 
     if (current_girder == nullptr && !isClimbing && !isJumping && !isLanding) {
-
         velocity.y += constants::GRAVITY * dt;
         position.y += velocity.y * dt;
         check_girder_intersection(girders);
@@ -145,10 +164,8 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
             isClimbing = false;
         }
     }
-    
 
     if (isJumping) {
-        playerSprite.setTextureRect(jumping_frames[0]);
         velocity.y += constants::GRAVITY * dt;
         position.y += velocity.y * dt;
 
@@ -162,16 +179,8 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
                 playerSprite.setTextureRect(jumping_frames[1]);
             }
         }
-        
     } else if (current_girder != nullptr) {
         position.y = current_girder->surface_y_at(position.x) - playerHeight;
-    }
-    if (isLanding) {
-        landingTimer -= dt;
-        playerSprite.setTextureRect(jumping_frames[1]);
-        if (landingTimer <= 0.0f) {
-            isLanding = false;
-        }
     }
 
     check_girder_intersection(girders);
