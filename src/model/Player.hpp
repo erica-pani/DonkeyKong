@@ -27,7 +27,7 @@ class Player
     bool isClimbing;
 
 public:
-    Player(sf::Vector2f position);
+    explicit Player(sf::Vector2f position);
     ~Player();
 
     sf::Sprite getSprite();
