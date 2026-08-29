@@ -16,6 +16,7 @@ class Player
     std::vector<sf::IntRect> running_frames;
     std::vector<sf::IntRect> jumping_frames;
 
+
     sf::Vector2f position;
     sf::Vector2f velocity;
 
@@ -32,6 +33,8 @@ class Player
 
     bool isJumping;
     bool isClimbing;
+    bool isLanding;
+    float landingTimer;
 
 public:
     explicit Player(sf::Vector2f position);

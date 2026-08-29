@@ -14,7 +14,8 @@ Player::Player(sf::Vector2f position) :
     animationTimer(0.0f),
     currentFrame(0),
     isJumping(false),
-    isClimbing(false) {
+    isClimbing(false),
+    landingTimer(0.0f) {
 
     if (!runningTexture.loadFromFile("assets/img/player_sprites/WalkSprite1.png")) {
         std::cerr << "Fehler beim Laden von assets/WalkSprite1.png!\n";
@@ -103,7 +104,7 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
 
     const float frameDuration = 0.12f; // Smaller value = faster animation
 
-    if (velocity.x != 0 && current_girder != nullptr && !isJumping && !isClimbing) {
+    if (velocity.x != 0 && current_girder != nullptr && !isJumping && !isClimbing && !isLanding) {
         animationTimer += dt;
         if (animationTimer >= frameDuration) {
             animationTimer -= frameDuration; // Preserves leftover time for smoother playback
@@ -116,7 +117,7 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
         playerSprite.setTextureRect(running_frames[0]);
     }
 
-    if (current_girder == nullptr && !isClimbing && !isJumping) {
+    if (current_girder == nullptr && !isClimbing && !isJumping && !isLanding) {
 
         velocity.y += constants::GRAVITY * dt;
         position.y += velocity.y * dt;
@@ -156,6 +157,8 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
             if (current_girder != nullptr) {
                 velocity.y = 0;
                 isJumping = false;
+                isLanding = true;
+                landingTimer = 0.075f;
                 playerSprite.setTextureRect(jumping_frames[1]);
             }
         }
@@ -163,6 +166,14 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
     } else if (current_girder != nullptr) {
         position.y = current_girder->surface_y_at(position.x) - playerHeight;
     }
+    if (isLanding) {
+        landingTimer -= dt;
+        playerSprite.setTextureRect(jumping_frames[1]);
+        if (landingTimer <= 0.0f) {
+            isLanding = false;
+        }
+    }
+
     check_girder_intersection(girders);
     playerShape.setPosition(position);
     playerSprite.setPosition(position);
