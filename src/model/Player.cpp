@@ -4,35 +4,63 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 
-Player::Player(sf::Vector2f position) : 
+Player::Player(sf::Vector2f position) :
+    runningTexture(),
+    playerSprite(runningTexture),
     playerShape(),
-    running_frames(),
     position(position),
     velocity({0, 0}),
     current_girder(nullptr),
+    animationTimer(0.0f),
+    currentFrame(0),
     isJumping(false),
-    isClimbing(false){
-        
-        playerShape.setSize({playerWidth, playerHeight});
-        playerShape.setOrigin({playerWidth / 2.0f, 0.0f});
-        playerShape.setPosition(position);
-        playerShape.setFillColor(sf::Color(200, 0, 0));
+    isClimbing(false) {
+
+    if (!runningTexture.loadFromFile("assets/WalkSprite1.png")) {
+        std::cerr << "Fehler beim Laden von assets/WalkSprite1.png!\n";
     }
 
-Player::~Player() {}
+    for (int i = 0; i < 4; ++i) {
+        running_frames.push_back(sf::IntRect({i * 16, 0}, {16, 27}));
+    }
+
+    playerSprite.setTextureRect(running_frames[0]);
+    playerSprite.setOrigin({16.0f / 2.0f, 0.0f});
+
+    float scaleX = playerWidth / 16.0f;
+    float scaleY = playerHeight / 27.0f;
+    playerSprite.setScale({scaleX, scaleY});
+    playerSprite.setPosition(position);
+
+    playerShape.setSize({playerWidth, playerHeight});
+    playerShape.setOrigin({playerWidth / 2.0f, 0.0f});
+    playerShape.setPosition(position);
+    playerShape.setFillColor(sf::Color(200, 0, 0, 0));
+}
+
+Player::~Player() = default;
+
+sf::Sprite Player::getSprite() {
+    return playerSprite;
+}
 
 sf::RectangleShape Player::getShape() {
     return playerShape;
 }
 
 void Player::move(Direction direction) {
+    float scaleX = playerWidth / 16.0f;
+    float scaleY = playerHeight / 27.0f; //TODO AUSLAGERN
+
     switch (direction) {
     case Direction::RIGHT:
         velocity.x = constants::MOVEMENT_SPEED;
+        playerSprite.setScale({scaleX, scaleY});
         break;
 
     case Direction::LEFT:
         velocity.x = -1 * constants::MOVEMENT_SPEED;
+        playerSprite.setScale({-scaleX, scaleY});
         break;
     
     case Direction::STAY:
@@ -66,7 +94,20 @@ void Player::duckDown() {}
 void Player::update(float dt, const std::vector<Girder>& girders) {
     float oldPosition = position.x;
     position.x += velocity.x * dt;
-    
+
+    if (velocity.x != 0 && current_girder != nullptr && !isJumping && !isClimbing) {
+        animationTimer += dt;
+        if (animationTimer >= 0.12f) {
+            animationTimer = 0.0f;
+            currentFrame = (currentFrame + 1) % 4;
+            playerSprite.setTextureRect(running_frames[currentFrame]);
+        }
+    } else {
+        currentFrame = 0;
+        animationTimer = 0.0f;
+        playerSprite.setTextureRect(running_frames[0]);
+    }
+
     if (current_girder == nullptr && !isClimbing && !isJumping) {
 
         velocity.y += constants::GRAVITY * dt;
@@ -114,6 +155,7 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
     }
     check_girder_intersection(girders);
     playerShape.setPosition(position);
+    playerSprite.setPosition(position);
 }
 
 void Player::check_girder_intersection(const std::vector<Girder>& girders) {
