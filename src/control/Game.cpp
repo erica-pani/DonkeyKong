@@ -129,7 +129,7 @@ void Game::draw() {
         game_layer.add_to_layer(ladder);
     }
 
-    game_layer.add_to_layer(player.getShape());
+    game_layer.add_to_layer(player.getSprite());
 
     barrel_control.draw();
     enemy_control.draw();
