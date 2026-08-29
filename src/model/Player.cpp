@@ -16,12 +16,18 @@ Player::Player(sf::Vector2f position) :
     isJumping(false),
     isClimbing(false) {
 
-    if (!runningTexture.loadFromFile("assets/WalkSprite1.png")) {
+    if (!runningTexture.loadFromFile("assets/img/player_sprites/WalkSprite1.png")) {
         std::cerr << "Fehler beim Laden von assets/WalkSprite1.png!\n";
     }
 
-    for (int i = 0; i < 4; ++i) {
-        running_frames.push_back(sf::IntRect({i * 16, 0}, {16, 27}));
+    sf::Vector2u textureSize = runningTexture.getSize();
+    int frameCount = textureSize.x / FRAME_WIDTH;
+
+    for (int i = 0; i < frameCount; ++i) {
+        running_frames.push_back(sf::IntRect({i * FRAME_WIDTH, 0}, {FRAME_WIDTH, FRAME_HEIGHT}));
+    }
+    for (int i = 0; i < 2; ++i) {
+        jumping_frames.push_back(sf::IntRect({i * FRAME_WIDTH, FRAME_HEIGHT}, {FRAME_WIDTH, FRAME_HEIGHT}));
     }
 
     playerSprite.setTextureRect(running_frames[0]);
@@ -49,8 +55,8 @@ sf::RectangleShape Player::getShape() {
 }
 
 void Player::move(Direction direction) {
-    float scaleX = playerWidth / 16.0f;
-    float scaleY = playerHeight / 27.0f; //TODO AUSLAGERN
+    float scaleX = playerWidth / FRAME_WIDTH;
+    float scaleY = playerHeight / FRAME_HEIGHT;
 
     switch (direction) {
     case Direction::RIGHT:
@@ -95,11 +101,13 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
     float oldPosition = position.x;
     position.x += velocity.x * dt;
 
+    const float frameDuration = 0.12f; // Smaller value = faster animation
+
     if (velocity.x != 0 && current_girder != nullptr && !isJumping && !isClimbing) {
         animationTimer += dt;
-        if (animationTimer >= 0.12f) {
-            animationTimer = 0.0f;
-            currentFrame = (currentFrame + 1) % 4;
+        if (animationTimer >= frameDuration) {
+            animationTimer -= frameDuration; // Preserves leftover time for smoother playback
+            currentFrame = (currentFrame + 1) % running_frames.size();
             playerSprite.setTextureRect(running_frames[currentFrame]);
         }
     } else {
@@ -139,6 +147,7 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
     
 
     if (isJumping) {
+        playerSprite.setTextureRect(jumping_frames[0]);
         velocity.y += constants::GRAVITY * dt;
         position.y += velocity.y * dt;
 
@@ -146,7 +155,8 @@ void Player::update(float dt, const std::vector<Girder>& girders) {
             check_girder_intersection(girders);
             if (current_girder != nullptr) {
                 velocity.y = 0;
-                isJumping = false; 
+                isJumping = false;
+                playerSprite.setTextureRect(jumping_frames[1]);
             }
         }
         
