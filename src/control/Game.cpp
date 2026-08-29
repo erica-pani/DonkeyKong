@@ -14,7 +14,18 @@ Game::Game() :
     ladder_control(),
     player({100, -200}),
     barrel_control(game_layer),
-    enemy_control(game_layer) {
+    enemy_control(game_layer),
+    font(),
+    text(font, "Press Enter to start") {
+
+        if (!font.openFromFile("assets/fonts/DejaVuSansMono.ttf")) { 
+            std::cerr << "Fehler beim Laden der Schriftart!" << std::endl;
+        }
+
+        text.setFillColor(sf::Color::White);     
+        text.setStyle(sf::Text::Bold);
+        text.setOrigin({text.getGlobalBounds().size.x / 2, text.getGlobalBounds().size.y / 2});
+        text.setPosition({300.f, -300.f});
 
         girders = build_girders();
         ladders = ladder_control.generate_ladders(girders);
@@ -79,7 +90,10 @@ bool Game::input() {
                     player.climbLadder(ladder);
                 }
             }
-            if (keyPressed->code == sf::Keyboard::Key::Enter && !isAlive()) restart_and_randomize();
+            if (keyPressed->code == sf::Keyboard::Key::Enter && !isAlive()) {
+                restart_and_randomize(false);
+                text.setString("");
+            }
         }
 
         if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {
@@ -90,11 +104,14 @@ bool Game::input() {
     return false;
 }
 
-void Game::restart_and_randomize() {
+void Game::restart_and_randomize(bool won) {
+    if (won) {
+        barrel_control.set_spawn_interval(barrel_control.get_spawn_interval() - 0.25f);
+    }
+    
     player.setPosition({100, -200});
     ladders = ladder_control.generate_ladders(girders);
     barrel_control.clear_barrels();
-    barrel_control.set_spawn_interval(barrel_control.get_spawn_interval() - 0.25f);
     enemy_control.spawn(girders, girder_to_win);
 }
 
@@ -116,10 +133,11 @@ bool Game::isAlive() {
 
 void Game::update(float time_passed) {
     if (!isAlive()) {
+        text.setString("Press Enter to restart ");                                                      
         return;
     }
     if (goal_reached() && isAlive()) {
-        restart_and_randomize();
+        restart_and_randomize(true);
     }
     barrel_control.update(time_passed, girders);
     enemy_control.update(time_passed, girders);
@@ -141,6 +159,8 @@ void Game::draw() {
     }
 
     game_layer.add_to_layer(player.getShape());
+
+    game_layer.add_to_layer(text);
 
     barrel_control.draw();
     enemy_control.draw();

@@ -35,7 +35,7 @@ private:
 
     bool goal_reached();
 
-    void restart_and_randomize();
+    void restart_and_randomize(bool won);
 
     // build the zig-zag of alternating sloped girders that make up the stage
     static std::vector<Girder> build_girders();
@@ -47,6 +47,9 @@ private:
     // view area and layers
     sf::View view;
     Layer game_layer;
+
+    sf::Font font;
+    sf::Text text;
 
     std::vector<Girder> girders;
     std::vector<Ladder> ladders;
