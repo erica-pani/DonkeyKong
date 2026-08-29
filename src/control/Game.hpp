@@ -31,16 +31,17 @@ private:
     // draws the scene
     void draw();
 
+    // Überprüft ob der Spieler noch am Leben ist
     bool isAlive();
 
+    // Überprüft ob der Spieler das Ziel erreicht hat
     bool goal_reached();
 
+    // Befördert die Spielfigur zurück an den Startpunkt und spawnt Hindernisse, Gegner und Leitern neu
     void restart_and_randomize(bool won);
 
     // build the zig-zag of alternating sloped girders that make up the stage
     static std::vector<Girder> build_girders();
-
-    static std::vector<Ladder> build_ladders(const std::vector<Girder>& girders);
 
     sf::RenderWindow window;
 

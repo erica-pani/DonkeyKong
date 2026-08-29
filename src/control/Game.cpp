@@ -24,7 +24,6 @@ Game::Game() :
 
         text.setFillColor(sf::Color::White);     
         text.setStyle(sf::Text::Bold);
-        text.setOrigin({text.getGlobalBounds().size.x / 2, text.getGlobalBounds().size.y / 2});
         text.setPosition({300.f, -300.f});
 
         girders = build_girders();
@@ -56,6 +55,8 @@ std::vector<Girder> Game::build_girders() {
 void Game::start() {
     // The clock is needed to control the speed of movement
     sf::Clock clock;
+
+    //text.setString("            Mode \n [1]Easy   [2]Normal  [3]Hard"); 
 
     while (window.isOpen()) {
         // Restart the clock and save the elapsed time into elapsed_time
@@ -133,7 +134,8 @@ bool Game::isAlive() {
 
 void Game::update(float time_passed) {
     if (!isAlive()) {
-        text.setString("Press Enter to restart ");                                                      
+        text.setString("Press Enter to restart");      
+        text.setOrigin({text.getGlobalBounds().size.x / 2, text.getGlobalBounds().size.y / 2});                                              
         return;
     }
     if (goal_reached() && isAlive()) {

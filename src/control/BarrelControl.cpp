@@ -8,8 +8,8 @@
 BarrelControl::BarrelControl(Layer& layer) :
     layer(layer),
     barrels(),
-    spawn_timer(0.f),
-    spawn_interval(4.f){
+    spawn_timer(0.0f),
+    spawn_interval(4.0f){
 }
 
 void BarrelControl::spawn(const std::vector<Girder>& girders) {
@@ -41,22 +41,23 @@ void BarrelControl::update(float dt, const std::vector<Girder>& girders) {
 }
 
 bool BarrelControl::check_barrel_intersection(Player& player) {
-    sf::RectangleShape player_shape = player.getShape();
+    sf::Sprite player_sprite = player.getSprite();
     for (auto& barrel : barrels) {
-        if (check_circle_collision(player_shape, barrel->get_position())) {
+        if (check_circle_collision(player_sprite, barrel->get_position())) {
             return true;
         }
     }
     return false;
 }
 
-bool BarrelControl::check_circle_collision(const sf::RectangleShape& playerShape, sf::Vector2f barrel_position) {
-    float playerLeft = playerShape.getPosition().x - playerShape.getSize().x / 2;
-    float playerTop = playerShape.getPosition().y;
-    float playerHeight = playerShape.getSize().y; 
+bool BarrelControl::check_circle_collision(const sf::Sprite& playerSprite, sf::Vector2f barrel_position) {
+    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
+    float playerLeft = playerSprite.getPosition().x - playerBounds.size.x / 2;
+    float playerTop = playerSprite.getPosition().y;
+    float playerHeight = playerBounds.size.y; 
 
     float nearestX = std::max(playerLeft,
-        std::min(barrel_position.x, playerLeft + playerShape.getSize().x));
+        std::min(barrel_position.x, playerLeft + playerBounds.size.x));
     float nearestY = std::max(playerTop,
         std::min(barrel_position.y, playerTop + playerHeight));
 

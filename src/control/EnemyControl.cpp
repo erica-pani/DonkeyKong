@@ -50,20 +50,20 @@ void EnemyControl::draw() {
 }
 
 bool EnemyControl::check_intersection(Player& player) {
-    sf::RectangleShape player_shape = player.getShape();
+    sf::Sprite player_sprite = player.getSprite();
     for (auto& enemy : enemies) {
-        if (check_enemy_collision(player_shape, enemy->get_shape())) {
+        if (check_enemy_collision(player_sprite, enemy->get_shape())) {
             return true;
         }
     }
     return false;
 }
 
-bool EnemyControl::check_enemy_collision(const sf::RectangleShape& playerShape, const sf::Sprite& enemyShape) {
-    sf::FloatRect playerBounds = playerShape.getGlobalBounds();
+bool EnemyControl::check_enemy_collision(const sf::Sprite& playerSprite, const sf::Sprite& enemyShape) {
+    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
     sf::FloatRect enemyBounds = enemyShape.getGlobalBounds(); 
 
-    sf::Vector2f margin{6.0f, 6.0f};
+    sf::Vector2f margin{9.0f, 9.0f};
 
     sf::FloatRect shrinkedEnemyBounds(
             enemyBounds.position + margin,           
