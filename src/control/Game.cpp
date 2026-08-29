@@ -16,7 +16,7 @@ Game::Game() :
     barrel_control(game_layer),
     enemy_control(game_layer),
     font(),
-    text(font, "Press Enter to start") {
+    text(font, "") {
 
         if (!font.openFromFile("assets/fonts/DejaVuSansMono.ttf")) { 
             std::cerr << "Fehler beim Laden der Schriftart!" << std::endl;
@@ -158,7 +158,7 @@ void Game::draw() {
         game_layer.add_to_layer(ladder);
     }
 
-    game_layer.add_to_layer(player.getShape());
+    game_layer.add_to_layer(player.getSprite());
 
     game_layer.add_to_layer(text);
 
