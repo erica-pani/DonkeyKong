@@ -14,11 +14,15 @@ class Player
     sf::Sprite playerSprite;
     sf::RectangleShape playerShape;
     std::vector<sf::IntRect> running_frames;
+    std::vector<sf::IntRect> jumping_frames;
 
     sf::Vector2f position;
     sf::Vector2f velocity;
 
     const Girder* current_girder;
+    //Sprite Size
+    static constexpr int FRAME_WIDTH = 16;
+    static constexpr int FRAME_HEIGHT = 27;
 
     float playerHeight = 40.f;
     float playerWidth = 30.f;
