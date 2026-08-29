@@ -16,16 +16,24 @@ Game::Game() :
     barrel_control(game_layer),
     enemy_control(game_layer),
     font(),
-    text(font, "") {
+    text(font, ""),
+    flagTexture(),
+    flagSprite(flagTexture) {
 
         if (!font.openFromFile("assets/fonts/DejaVuSansMono.ttf")) { 
             std::cerr << "Fehler beim Laden der Schriftart!" << std::endl;
         }
-
         text.setFillColor(sf::Color::White);     
         text.setStyle(sf::Text::Bold);
         text.setPosition({300.f, -300.f});
 
+        if (!flagTexture.loadFromFile("assets/img/ziel.png")) {
+            std::cerr << "Fehler beim Laden der Schriftart!" << std::endl;
+        }
+        flagSprite.setTexture(flagTexture, true);
+        flagSprite.setOrigin({flagSprite.getGlobalBounds().size.x / 2, flagSprite.getGlobalBounds().size.y});
+        flagSprite.setPosition({55.0f, -500.0f});
+        
         girders = build_girders();
         ladders = ladder_control.generate_ladders(girders);
         barrel_control.spawn(girders);
@@ -164,6 +172,7 @@ void Game::draw() {
     game_layer.add_to_layer(player.getSprite());
 
     game_layer.add_to_layer(text);
+    game_layer.add_to_layer(flagSprite);
 
     barrel_control.draw();
     enemy_control.draw();

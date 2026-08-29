@@ -54,12 +54,16 @@ private:
 
     std::vector<Girder> girders;
     std::vector<Ladder> ladders;
+    const Girder* girder_to_win;
+
     BarrelControl barrel_control;
     EnemyControl enemy_control;
-    const Girder* girder_to_win;
     LadderControl ladder_control;
 
     Player player;
+
+    sf::Texture flagTexture;
+    sf::Sprite flagSprite;
 };
 
 #endif
