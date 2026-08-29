@@ -6,7 +6,6 @@
 
 Player::Player(sf::Vector2f position) : 
     playerShape(),
-    running_frames(),
     position(position),
     velocity({0, 0}),
     current_girder(nullptr),
@@ -60,8 +59,6 @@ void Player::jump() {
         isJumping = true;
     }
 }
-
-void Player::duckDown() {}
 
 void Player::update(float dt, const std::vector<Girder>& girders) {
     float oldPosition = position.x;

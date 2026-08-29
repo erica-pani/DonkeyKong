@@ -12,7 +12,7 @@ Game::Game() :
     girders(),
     ladders(),
     ladder_control(),
-    player({100, -190}),
+    player({100, -200}),
     barrel_control(game_layer),
     enemy_control(game_layer) {
 
@@ -52,7 +52,6 @@ void Game::start() {
  
         // handle input, check if window is still open
         if (!input()) {
-            //player.move(Direction::RIGHT);
             // update the scene according to the passed time
             update(elapsed_time.asSeconds());
             // draw the scene
@@ -75,12 +74,12 @@ bool Game::input() {
             if (keyPressed->code == sf::Keyboard::Key::D) player.move(Direction::RIGHT);
             if (keyPressed->code == sf::Keyboard::Key::A) player.move(Direction::LEFT);
             if (keyPressed->code == sf::Keyboard::Key::W) player.jump();
-            if (keyPressed->code == sf::Keyboard::Key::S) player.duckDown();
             if (keyPressed->code == sf::Keyboard::Key::C) {
                 for (Ladder& ladder : ladders) {
                     player.climbLadder(ladder);
                 }
             }
+            if (keyPressed->code == sf::Keyboard::Key::Enter && !isAlive()) restart_and_randomize();
         }
 
         if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {
@@ -92,7 +91,7 @@ bool Game::input() {
 }
 
 void Game::restart_and_randomize() {
-    player.setPosition({100, -190});
+    player.setPosition({100, -200});
     ladders = ladder_control.generate_ladders(girders);
     barrel_control.clear_barrels();
     barrel_control.set_spawn_interval(barrel_control.get_spawn_interval() - 0.25f);
@@ -108,9 +107,10 @@ bool Game::goal_reached() {
 
 bool Game::isAlive() {
     if (barrel_control.check_barrel_intersection(player) ||
-            enemy_control.check_intersection(player)) {
+            enemy_control.check_intersection(player) ||
+            player.getShape().getPosition().y > 0) {
         return false;
-    }
+    } 
     return true;
 }
 
