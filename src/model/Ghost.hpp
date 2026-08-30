@@ -16,5 +16,8 @@ public:
     // Bewegt den Geist nach Links und/oder nach rechts bis eine boundary oder das Ende eine Plattform erreicht ist 
     // und kehrt wieder um
     void update(float dt, const std::vector<Girder>& girders) override;
+
+    float get_right_boundary();
+    float get_left_boundary();
 };
 

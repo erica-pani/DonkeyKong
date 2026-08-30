@@ -22,7 +22,8 @@ set(ViewSources
 
 set(TestSources
     ${CMAKE_CURRENT_SOURCE_DIR}/GameTest.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/EnemyControlTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/PlayerTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/GhostTest.cpp
     )
 
 add_executable(Test

@@ -55,3 +55,11 @@ void Ghost::update(float dt, const std::vector<Girder>& girders) {
     check_girder_intersection(girders);
 }
 
+float Ghost::get_left_boundary() {
+    return left_boundary;
+}
+
+float Ghost::get_right_boundary() {
+    return right_boundary;
+}
+
