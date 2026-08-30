@@ -25,7 +25,6 @@ float LadderControl::random_x(
         lower.max_x()
     );
 
-    // Die gesamte Leiter muss innerhalb des gemeinsamen Bereichs liegen.
     maxX -= ladderWidth;
 
     std::uniform_real_distribution<float> distribution(minX, maxX);
@@ -39,14 +38,11 @@ void LadderControl::generate_ladders(
 
     ladders.clear();
 
-    // Girder 0 -> Girder 1
     add_ladder(girders[0], girders[1]);
 
-    // Girder 1 -> Girder 2
     add_ladder(girders[1], girders[2]);
     add_ladder(girders[1], girders[2]);
 
-    // Girder 2 -> Girder 3
     add_ladder(girders[2], girders[3]);
     add_ladder(girders[2], girders[3]);
 
@@ -59,12 +55,10 @@ const std::vector<Ladder>& LadderControl::get_ladders() const {
 bool LadderControl::overlaps_existing_ladder(
     float x,
     float width,
-    const std::vector<Ladder>& ladders,
     const Girder& lower
 ) const {
     for (const Ladder& ladder : ladders) {
 
-        // Nur Leitern auf derselben Ebene betrachten.
         if (ladder.get_girder_pointer() != &lower) {
             continue;
         }
@@ -98,7 +92,6 @@ void LadderControl::add_ladder(
         if (overlaps_existing_ladder(
                 x,
                 ladderWidth,
-                ladders,
                 lower)) {
             continue;
         }
