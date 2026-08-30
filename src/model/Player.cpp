@@ -218,3 +218,11 @@ void Player::setPosition(sf::Vector2f newPosition) {
 sf::Vector2f Player::getVelocity() const {
     return velocity;
 }
+
+void Player::reset(sf::Vector2f position) {
+    isJumping = false;
+    isClimbing = false;
+    isLanding = false;
+    velocity = sf::Vector2f(0.0f, 0.0f);
+    setPosition(position);
+}

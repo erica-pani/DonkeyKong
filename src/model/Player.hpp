@@ -66,6 +66,9 @@ public:
     // Ist kein Girder in der Nähe zu finden wird current_girder = nullptr gesetzt
     void check_girder_intersection(const std::vector<Girder>& girders);
 
+    // Stellt den ursprünglichen Zustand des Players wieder her
+    void reset(sf::Vector2f position);
+
     void setGirder(const Girder& girder);
     const Girder* getGirder() const;
     sf::Vector2f getVelocity() const;

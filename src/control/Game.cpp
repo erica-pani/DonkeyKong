@@ -119,7 +119,7 @@ void Game::restart_and_randomize(bool won) {
     } else {
         barrel_control.set_spawn_interval(4.0f);
     }
-    player.setPosition({100, -200});
+    player.reset({100, -200});
     ladders = ladder_control.generate_ladders(girders);
     barrel_control.clear_barrels();
     enemy_control.spawn(girders, girder_to_win);
