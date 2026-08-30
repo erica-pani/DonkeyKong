@@ -65,3 +65,30 @@ TEST(PlayerTest, player_moves_left) {
 
     EXPECT_FLOAT_EQ(player.getShape().getPosition().x, newPosition);
 }
+
+TEST(PlayerTest, is_on_girder) {
+    Player player = set_up_player();
+    std::vector<Girder> girders = set_up_girders();
+
+    player.check_girder_intersection(girders);
+    EXPECT_EQ(player.getGirder(), &girders[0]);
+}
+
+TEST(PlayerTest, is_far_from_girder) {
+    Player player = set_up_player();
+    player.setPosition({300, -500});
+    std::vector<Girder> girders = set_up_girders();
+
+    player.check_girder_intersection(girders);
+    EXPECT_EQ(player.getGirder(), nullptr);
+}
+
+TEST(PlayerTest, girder_on_boundary) {
+    Player player = set_up_player();
+    float height = player.getShape().getGlobalBounds().size.y;
+    player.setPosition({300, -260 - height / 1.5f});
+    std::vector<Girder> girders = set_up_girders();
+
+    player.check_girder_intersection(girders);
+    EXPECT_EQ(player.getGirder(), &girders[0]);
+}
