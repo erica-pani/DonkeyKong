@@ -214,3 +214,7 @@ void Player::setPosition(sf::Vector2f newPosition) {
     position = newPosition;
     playerShape.setPosition(newPosition);
 }
+
+sf::Vector2f Player::getVelocity() const {
+    return velocity;
+}

@@ -68,4 +68,5 @@ public:
 
     void setGirder(const Girder& girder);
     const Girder* getGirder() const;
+    sf::Vector2f getVelocity() const;
 };

@@ -2,17 +2,22 @@
 #include "../model/Enemy.hpp"
 #include "../model/Player.hpp"
 
+#include <random>
+
 class EnemyControl {
 private:
     std::vector<std::unique_ptr<Enemy>> enemies;
     sf::Texture enemyTexture;
     Layer& layer;
 
+    std::random_device rd;
+    std::mt19937 generator;
+
     // Überprüft ob sich die Spielfigur und ein Gegner überschneiden
     bool check_enemy_collision(const sf::Sprite& playerSprite, const sf::Sprite& enemyShape);
 
-    // Generiert einen zufälligen float zwischen min und max
-    float get_random_position(float min, float max);
+    // Generiert einen zufälligen float zwischen minValue und maxValue
+    float get_random_position(float minValue, float maxValue);
 
     sf::Texture getTexture();
 

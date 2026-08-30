@@ -1,13 +1,13 @@
 #include "EnemyControl.hpp"
 #include "../model/Ghost.hpp"
-
-#include <random>
 #include <algorithm>
 #include <thread>
 
 EnemyControl::EnemyControl(Layer& layer) :
     enemies(),
-    layer(layer) {
+    layer(layer),
+    rd(),
+    generator(rd()) {
         if (!enemyTexture.loadFromFile("assets/img/enemy_pngs/ghost_texture.png")) {
         throw std::runtime_error("Fehler beim Laden der Gegnersprite-Textur!");
         }
@@ -17,15 +17,13 @@ EnemyControl::~EnemyControl() {
 }
 
 void EnemyControl::spawn(const std::vector<Girder>& girders, const Girder* girder_to_win) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
     std::bernoulli_distribution coin_flip(0.5);
 
     enemies.clear();
     int maxEns = 2;
     for (const auto& girder : girders) {
 
-        if (coin_flip(gen) && girder_to_win != &girder && maxEns > 0) {
+        if (coin_flip(generator) && girder_to_win != &girder && maxEns > 0) {
             
             float positionX = get_random_position(200.0f, 400.0f);
 
@@ -73,15 +71,13 @@ bool EnemyControl::check_enemy_collision(const sf::Sprite& playerSprite, const s
     return playerBounds.findIntersection(shrinkedEnemyBounds).has_value();
 }
 
-float EnemyControl::get_random_position(float miin, float maax) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
+float EnemyControl::get_random_position(float minValue, float maxValue) {
 
-    float min = miin;
-    float max = maax;
+    float min = minValue;
+    float max = maxValue;
 
     std::uniform_real_distribution<float> distrib(min, max);
-    return distrib(gen);
+    return distrib(generator);
 }
 
 sf::Texture EnemyControl::getTexture() {
