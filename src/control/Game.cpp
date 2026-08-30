@@ -10,14 +10,13 @@ Game::Game() :
     view(sf::FloatRect(sf::Vector2f({0,-constants::VIEW_HEIGHT}), sf::Vector2f({constants::VIEW_WIDTH,constants::VIEW_HEIGHT}))),
     game_layer(window),
     girders(),
-    ladders(),
-    ladder_control(),
     player({100, -190}),
     barrel_control(game_layer),
+    ladder_control(game_layer),
     enemy_control(game_layer) {
 
         girders = build_girders();
-        ladders = ladder_control.generate_ladders(girders);
+        ladder_control.generate_ladders(girders);
         barrel_control.spawn(girders);
         girder_to_win = &girders.back();
         enemy_control.spawn(girders, girder_to_win);
@@ -77,7 +76,7 @@ bool Game::input() {
             if (keyPressed->code == sf::Keyboard::Key::W) player.jump();
             if (keyPressed->code == sf::Keyboard::Key::S) player.duckDown();
             if (keyPressed->code == sf::Keyboard::Key::C) {
-                for (Ladder& ladder : ladders) {
+                for (const Ladder& ladder : ladder_control.get_ladders()) {
                     player.climbLadder(ladder);
                 }
             }
@@ -125,9 +124,7 @@ void Game::draw() {
         game_layer.add_to_layer(girder.get_shape());
     }
 
-    for (const Ladder& ladder : ladders) {
-        game_layer.add_to_layer(ladder);
-    }
+    ladder_control.draw();
 
     game_layer.add_to_layer(player.getSprite());
 

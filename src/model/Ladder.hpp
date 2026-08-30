@@ -21,7 +21,7 @@ public:
     Ladder(sf::Vector2f position, float width, float height, int numRungs, const Girder& girder);
     ~Ladder();
 
-    bool covers_x(float xPosition);
+    bool covers_x(float xPosition) const;
 
     float get_center() const;
 

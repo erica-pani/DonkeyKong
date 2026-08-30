@@ -47,7 +47,7 @@ public:
     void move(Direction direction);
     void jump();
     void duckDown();
-    void climbLadder(Ladder& ladder);
+    void climbLadder(const Ladder& ladder);
 
     void update(float dt, const std::vector<Girder>& girders);
     void check_girder_intersection(const std::vector<Girder>& girders);
