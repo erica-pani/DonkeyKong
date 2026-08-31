@@ -44,7 +44,6 @@ void LadderControl::generate_ladders(
     add_ladder(girders[1], girders[2]);
 
     add_ladder(girders[2], girders[3]);
-    add_ladder(girders[2], girders[3]);
 
 }
 
