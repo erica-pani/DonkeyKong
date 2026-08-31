@@ -7,7 +7,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
-
+// Enemy ist eine Figur die den Spieler daran hindern soll das Ziel zu erreichen
 class Enemy {
 private:
     const Girder* current_girder;
@@ -29,7 +29,9 @@ public:
     void set_velocity(sf::Vector2f newVelocity);
     const Girder* get_current_girder();
 
+    // berechnet die nächste Position des Gegners
     virtual void update(float dt, const std::vector<Girder>& girders);
 
+    // Überprüft ob der Gegner auf einer Plattform steht und setzt current_girder
     void check_girder_intersection(const std::vector<Girder>& girders);
 };

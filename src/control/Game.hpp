@@ -31,14 +31,20 @@ private:
     // draws the scene
     void draw();
 
+    // Überprüft ob der Spieler noch am Leben ist
     bool isAlive();
 
+    // Überprüft ob der Spieler das Ziel erreicht hat
     bool goal_reached();
+
+    // Befördert die Spielfigur zurück an den Startpunkt und spawnt Hindernisse, Gegner und Leitern neu
+    void restart_and_randomize(bool won);
 
     // build the zig-zag of alternating sloped girders that make up the stage
     static std::vector<Girder> build_girders();
 
-    static std::vector<Ladder> build_ladders(const std::vector<Girder>& girders);
+    // Zeigt den Text zur Auswahl der Gamemodi an
+    void setMenuText();
 
     sf::RenderWindow window;
 
@@ -46,14 +52,25 @@ private:
     sf::View view;
     Layer game_layer;
 
+    sf::Font font;
+    sf::Text text;
+
     std::vector<Girder> girders;
     std::vector<Ladder> ladders;
+    const Girder* girder_to_win;
+
     BarrelControl barrel_control;
     EnemyControl enemy_control;
-    const Girder* girder_to_win;
     LadderControl ladder_control;
 
     Player player;
+
+    sf::Texture flagTexture;
+    sf::Sprite flagSprite;
+
+    enum class GameState {START_MENU, PLAYING};
+
+    GameState state = GameState::START_MENU;
 };
 
 #endif
