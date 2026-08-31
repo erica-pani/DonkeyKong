@@ -82,7 +82,7 @@ void Player::move(Direction direction) {
     }
 }
 
-void Player::climbLadder(Ladder& ladder) {
+void Player::climbLadder(const Ladder& ladder) {
     if (ladder.covers_x(position.x) && ladder.get_girder_pointer() == current_girder) {
         position.x = ladder.get_center(); 
         velocity.y = -1.0f * 200.f;

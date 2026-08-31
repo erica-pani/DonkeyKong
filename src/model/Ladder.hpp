@@ -24,7 +24,7 @@ public:
     ~Ladder();
 
     // Überprüft ob die angegebene Position im Bereich der Ladder ist
-    bool covers_x(float xPosition);
+    bool covers_x(float xPosition) const;
     
     float get_center() const;
     void setGirder(Girder& girder);

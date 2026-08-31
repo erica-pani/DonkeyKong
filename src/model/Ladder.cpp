@@ -44,7 +44,7 @@ float Ladder::get_ladder_width() const {
     return leftRail.getSize().x + rungs[0].getSize().x + rightRail.getSize().x;
 }
 
-bool Ladder::covers_x(float xPosition) {
+bool Ladder::covers_x(float xPosition) const{
     return getPosition().x <= xPosition &&
         getPosition().x + get_ladder_width() >= xPosition;
 }

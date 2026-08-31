@@ -10,10 +10,9 @@ Game::Game() :
     view(sf::FloatRect(sf::Vector2f({0,-constants::VIEW_HEIGHT}), sf::Vector2f({constants::VIEW_WIDTH,constants::VIEW_HEIGHT}))),
     game_layer(window),
     girders(),
-    ladders(),
-    ladder_control(),
     player({100, -200}),
     barrel_control(game_layer),
+    ladder_control(game_layer),
     enemy_control(game_layer),
     font(),
     text(font, ""),
@@ -33,9 +32,9 @@ Game::Game() :
         flagSprite.setTexture(flagTexture, true);
         flagSprite.setOrigin({flagSprite.getGlobalBounds().size.x / 2, flagSprite.getGlobalBounds().size.y});
         flagSprite.setPosition({55.0f, -500.0f});
-        
+
         girders = build_girders();
-        ladders = ladder_control.generate_ladders(girders);
+        ladder_control.generate_ladders(girders);
         barrel_control.spawn(girders);
         girder_to_win = &girders.back();
         enemy_control.spawn(girders, girder_to_win);
@@ -95,7 +94,7 @@ bool Game::input() {
             if (keyPressed->code == sf::Keyboard::Key::A) player.move(Direction::LEFT);
             if (keyPressed->code == sf::Keyboard::Key::W) player.jump();
             if (keyPressed->code == sf::Keyboard::Key::C) {
-                for (Ladder& ladder : ladders) {
+                for (const Ladder& ladder : ladder_control.get_ladders()) {
                     player.climbLadder(ladder);
                 }
             }
@@ -141,7 +140,7 @@ void Game::restart_and_randomize(bool won) {
         barrel_control.set_spawn_interval(4.0f);
     }
     player.reset({100, -200});
-    ladders = ladder_control.generate_ladders(girders);
+    ladder_control.generate_ladders(girders);
     barrel_control.clear_barrels();
     enemy_control.spawn(girders, girder_to_win);
 }
@@ -196,9 +195,7 @@ void Game::draw() {
         game_layer.add_to_layer(girder.get_shape());
     }
 
-    for (const Ladder& ladder : ladders) {
-        game_layer.add_to_layer(ladder);
-    }
+    ladder_control.draw();
 
     game_layer.add_to_layer(player.getSprite());
     game_layer.add_to_layer(flagSprite);

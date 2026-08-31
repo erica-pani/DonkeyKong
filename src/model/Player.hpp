@@ -57,7 +57,7 @@ public:
 
     // Prüft ob eine Leiter in der nähe ist und zentriert die Speilfigur au der Leiter.
     // Leitet danach die Bewegung nach oben ein
-    void climbLadder(Ladder& ladder);
+    void climbLadder(const Ladder& ladder);
 
     // Bestimmt welche Bewegung die Figur gerade ausführt und bestimmt die neue Position entsprechend
     void update(float dt, const std::vector<Girder>& girders);
