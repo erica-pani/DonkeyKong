@@ -4,6 +4,9 @@
 
 #include <random>
 
+// Hat die Kontrolle über alle Gegnerfiguren sowie deren Texturen
+// updatet ihre Position und überprüft auf Kollision
+// Generiert und zeichnet alle Gegner
 class EnemyControl {
 private:
     std::vector<std::unique_ptr<Enemy>> enemies;
