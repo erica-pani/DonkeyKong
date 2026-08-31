@@ -13,6 +13,8 @@ private:
     std::random_device rd;
     std::mt19937 generator;
 
+    int maxEnemies = 2;
+
     // Überprüft ob sich die Spielfigur und ein Gegner überschneiden
     bool check_enemy_collision(const sf::Sprite& playerSprite, const sf::Sprite& enemyShape);
 
@@ -36,5 +38,7 @@ public:
 
     //Überprüft ob der Spieler von einem Enemy getroffen wurde
     bool check_intersection(Player& player);
+
+    void set_max_enemies(int maxEns);
 };
 

@@ -19,17 +19,17 @@ EnemyControl::~EnemyControl() {
 void EnemyControl::spawn(const std::vector<Girder>& girders, const Girder* girder_to_win) {
     std::bernoulli_distribution coin_flip(0.5);
 
+    int max_enemies = maxEnemies;
     enemies.clear();
-    int maxEns = 2;
     for (const auto& girder : girders) {
 
-        if (coin_flip(generator) && girder_to_win != &girder && maxEns > 0) {
+        if (coin_flip(generator) && girder_to_win != &girder && max_enemies > 0) {
             
             float positionX = get_random_position(200.0f, 400.0f);
 
             enemies.emplace_back(std::make_unique<Ghost>(sf::Vector2f(positionX,
                 girder.surface_y_at(positionX)), enemyTexture));
-            maxEns -= 1;
+            max_enemies -= 1;
         }
     }
     
@@ -87,4 +87,8 @@ sf::Texture EnemyControl::getTexture() {
     }
 
     return tex;
+}
+
+void EnemyControl::set_max_enemies(int maxEns) {
+    maxEnemies = maxEns;
 }

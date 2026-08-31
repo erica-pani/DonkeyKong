@@ -43,6 +43,9 @@ private:
     // build the zig-zag of alternating sloped girders that make up the stage
     static std::vector<Girder> build_girders();
 
+    // Zeigt den Text zur Auswahl der Gamemodi an
+    void setMenuText();
+
     sf::RenderWindow window;
 
     // view area and layers
@@ -64,6 +67,10 @@ private:
 
     sf::Texture flagTexture;
     sf::Sprite flagSprite;
+
+    enum class GameState {START_MENU, PLAYING};
+
+    GameState state = GameState::START_MENU;
 };
 
 #endif
