@@ -136,7 +136,7 @@ bool Game::input() {
 
 void Game::restart_and_randomize(bool won) {
     if (won) {
-        barrel_control.set_spawn_interval(barrel_control.get_spawn_interval() - 0.25f);
+        barrel_control.set_spawn_interval(barrel_control.get_spawn_interval() - 0.33f);
     } else {
         barrel_control.set_spawn_interval(4.0f);
     }
