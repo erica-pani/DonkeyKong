@@ -32,31 +32,34 @@ Ghost::~Ghost() {
 }
 
 void Ghost::update(float dt, const std::vector<Girder>& girders) {
+    float currentHeight = get_shape().getGlobalBounds().size.y;
+    float oldPosition = get_postion().x;
 
     if (get_current_girder() != nullptr) {
-        float currentHeight = get_shape().getGlobalBounds().size.y;
 
         if (get_postion().x >= right_boundary) {
             set_velocity({-movement_speed, 0.0f});
         } else if (get_postion().x <= left_boundary) {
             set_velocity({movement_speed, 0.0f});
         }
-    
-        set_postion({get_postion().x + get_velocity().x * dt,
-            get_current_girder()->surface_y_at(get_postion().x) - currentHeight / 2.0f});
 
-    } else if (get_current_girder() == nullptr) {
-
-        if (get_velocity().x > 0) {
-            set_velocity({-120.0f, 0.0f});
-        } else if (get_velocity().x < 0) {
-            set_velocity({120.0f, 0.0f});
+        float newPosition = get_postion().x + get_velocity().x * dt;
+        if (!get_current_girder()->covers_x(newPosition)) {
+            newPosition = oldPosition;
+            set_velocity({-1.0f * get_velocity().x, 0.0f});
         }
-
-    }
-    
-
+        
+        set_postion({newPosition,
+            get_current_girder()->surface_y_at(get_postion().x) - currentHeight / 2.0f});
+    } 
     check_girder_intersection(girders);
-   
+}
+
+float Ghost::get_left_boundary() {
+    return left_boundary;
+}
+
+float Ghost::get_right_boundary() {
+    return right_boundary;
 }
 

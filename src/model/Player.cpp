@@ -55,7 +55,7 @@ sf::Sprite Player::getSprite() {
     return playerSprite;
 }
 
-sf::RectangleShape Player::getShape() {
+sf::RectangleShape& Player::getShape() {
     return playerShape;
 }
 
@@ -99,8 +99,6 @@ void Player::jump() {
         isJumping = true;
     }
 }
-
-void Player::duckDown() {}
 
 void Player::update(float dt, const std::vector<Girder>& girders) {
     float oldPosition = position.x;
@@ -209,4 +207,22 @@ void Player::setGirder(const Girder& girder) {
 
 const Girder* Player::getGirder() const {
     return current_girder;
+}
+
+void Player::setPosition(sf::Vector2f newPosition) {
+    current_girder = nullptr;
+    position = newPosition;
+    playerShape.setPosition(newPosition);
+}
+
+sf::Vector2f Player::getVelocity() const {
+    return velocity;
+}
+
+void Player::reset(sf::Vector2f position) {
+    isJumping = false;
+    isClimbing = false;
+    isLanding = false;
+    velocity = sf::Vector2f(0.0f, 0.0f);
+    setPosition(position);
 }

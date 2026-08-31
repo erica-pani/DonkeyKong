@@ -15,11 +15,26 @@ class BarrelControl {
 public:
     BarrelControl(Layer& layer);
 
+    // Fügt barrels ein neus barrel hinzu
     void spawn(const std::vector<Girder>& girders);
+
+    // Die Methode hat drei Funktionen:
+    // - aktualisiert die Position der barrels
+    // - spawnt ein neues barrel auf den Timer
+    // - löscht die barrels die aus dem Bild gefallen sind
     void update(float dt, const std::vector<Girder>& girders);
+
+    // Zeichnet barrels auf das Fenster
     void draw();
-    void set_spawn_interval(float interval);
+
+    // Überprüft ob der Spieler von einem barrel getroffen wurde
     bool check_barrel_intersection(Player& player);
+
+    void set_spawn_interval(float interval);
+    float get_spawn_interval();
+
+    // leert den Vektor barrels
+    void clear_barrels();
 
 private:
     Layer& layer;
@@ -28,7 +43,8 @@ private:
     float spawn_timer;
     float spawn_interval;
 
-    bool check_circle_collision(const sf::RectangleShape& playerShape, sf::Vector2f barrel_position);
+    // Überprüft ob sich die Spielfigur und ein barrel schneiden
+    bool check_circle_collision(const sf::Sprite& playerSprite, sf::Vector2f barrel_position);
 };
 
 #endif

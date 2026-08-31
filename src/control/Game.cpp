@@ -12,10 +12,28 @@ Game::Game() :
     girders(),
     ladders(),
     ladder_control(),
-    player({100, -190}),
+    player({100, -200}),
     barrel_control(game_layer),
-    enemy_control(game_layer) {
+    enemy_control(game_layer),
+    font(),
+    text(font, ""),
+    flagTexture(),
+    flagSprite(flagTexture) {
 
+        if (!font.openFromFile("assets/fonts/DejaVuSansMono.ttf")) { 
+            std::cerr << "Fehler beim Laden der Schriftart!" << std::endl;
+        }
+        text.setFillColor(sf::Color::White);     
+        text.setStyle(sf::Text::Bold);
+        text.setPosition({300.f, -300.f});
+
+        if (!flagTexture.loadFromFile("assets/img/ziel.png")) {
+            std::cerr << "Fehler beim Laden der Schriftart!" << std::endl;
+        }
+        flagSprite.setTexture(flagTexture, true);
+        flagSprite.setOrigin({flagSprite.getGlobalBounds().size.x / 2, flagSprite.getGlobalBounds().size.y});
+        flagSprite.setPosition({55.0f, -500.0f});
+        
         girders = build_girders();
         ladders = ladder_control.generate_ladders(girders);
         barrel_control.spawn(girders);
@@ -46,13 +64,14 @@ void Game::start() {
     // The clock is needed to control the speed of movement
     sf::Clock clock;
 
+   setMenuText();
+
     while (window.isOpen()) {
         // Restart the clock and save the elapsed time into elapsed_time
         sf::Time elapsed_time = clock.restart();
  
         // handle input, check if window is still open
         if (!input()) {
-            //player.move(Direction::RIGHT);
             // update the scene according to the passed time
             update(elapsed_time.asSeconds());
             // draw the scene
@@ -75,11 +94,35 @@ bool Game::input() {
             if (keyPressed->code == sf::Keyboard::Key::D) player.move(Direction::RIGHT);
             if (keyPressed->code == sf::Keyboard::Key::A) player.move(Direction::LEFT);
             if (keyPressed->code == sf::Keyboard::Key::W) player.jump();
-            if (keyPressed->code == sf::Keyboard::Key::S) player.duckDown();
             if (keyPressed->code == sf::Keyboard::Key::C) {
                 for (Ladder& ladder : ladders) {
                     player.climbLadder(ladder);
                 }
+            }
+            if (keyPressed->code == sf::Keyboard::Key::Enter && !isAlive()) {
+                restart_and_randomize(false);
+                text.setString("");
+            }
+            if (keyPressed->code == sf::Keyboard::Key::M && !isAlive()) {
+                setMenuText();
+            }
+            if (state == GameState::START_MENU) {
+                bool selected = false;
+                if (keyPressed->code == sf::Keyboard::Key::Num1) {
+                    enemy_control.set_max_enemies(1);
+                    selected = true;
+                } else if (keyPressed->code == sf::Keyboard::Key::Num2) {
+                    enemy_control.set_max_enemies(2);
+                    selected = true;
+                } else if (keyPressed->code == sf::Keyboard::Key::Num3) {
+                    enemy_control.set_max_enemies(3);
+                    selected = true;
+                }
+                if (selected) {
+                    restart_and_randomize(false);
+                    text.setString("");
+                    state = GameState::PLAYING;
+                } 
             }
         }
 
@@ -91,6 +134,18 @@ bool Game::input() {
     return false;
 }
 
+void Game::restart_and_randomize(bool won) {
+    if (won) {
+        barrel_control.set_spawn_interval(barrel_control.get_spawn_interval() - 0.33f);
+    } else {
+        barrel_control.set_spawn_interval(4.0f);
+    }
+    player.reset({100, -200});
+    ladders = ladder_control.generate_ladders(girders);
+    barrel_control.clear_barrels();
+    enemy_control.spawn(girders, girder_to_win);
+}
+
 bool Game::goal_reached() {
     if (player.getGirder() == girder_to_win) {
         return true;
@@ -100,19 +155,35 @@ bool Game::goal_reached() {
 
 bool Game::isAlive() {
     if (barrel_control.check_barrel_intersection(player) ||
-            enemy_control.check_intersection(player)) {
+            enemy_control.check_intersection(player) ||
+            player.getShape().getPosition().y > 0) {
         return false;
-    }
+    } 
     return true;
 }
 
+void Game::setMenuText() {
+    text.setString("            Mode \n[1]Easy   [2]Normal  [3]Hard"); 
+    text.setOrigin({text.getGlobalBounds().size.x / 2, text.getGlobalBounds().size.y / 2});
+    state = GameState::START_MENU;
+}
+
 void Game::update(float time_passed) {
-    if (!isAlive() || goal_reached()) {
+    if (state == GameState::START_MENU) {
         return;
+    }
+    
+    if (!isAlive()) {
+        text.setString("  Press Enter to restart\nPress M to change Game Mode");   
+        text.setOrigin({text.getGlobalBounds().size.x / 2, text.getGlobalBounds().size.y / 2});                                                 
+        return;
+    }
+    if (goal_reached() && isAlive()) {
+        restart_and_randomize(true);
     }
     barrel_control.update(time_passed, girders);
     enemy_control.update(time_passed, girders);
-    player.update(time_passed, girders);
+    player.update(time_passed, girders); 
 }
 
 void Game::draw() {
@@ -130,9 +201,11 @@ void Game::draw() {
     }
 
     game_layer.add_to_layer(player.getSprite());
+    game_layer.add_to_layer(flagSprite);
 
     barrel_control.draw();
     enemy_control.draw();
+    game_layer.add_to_layer(text);
     game_layer.draw();
 
     window.display();

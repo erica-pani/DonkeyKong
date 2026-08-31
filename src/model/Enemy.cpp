@@ -9,7 +9,7 @@ Enemy::Enemy(sf::Vector2f position, const sf::Texture& tex):
     enemyTexture(tex),
     enemySprite(enemyTexture) {
 
-        sf::Vector2f targetSize{42.0f, 45.0f};
+        sf::Vector2f targetSize{35.0f, 38.0f};
         enemySprite.setOrigin({enemyTexture.getSize().x / 2.0f, enemyTexture.getSize().y / 2.0f});
 
         sf::Vector2f scaleFactor{
@@ -58,14 +58,14 @@ void Enemy::set_velocity(sf::Vector2f newVelo) {
 }
 
 void Enemy::check_girder_intersection(const std::vector<Girder>& girders) {
-    float playerHeight = enemySprite.getGlobalBounds().size.y;
+    float height = enemySprite.getGlobalBounds().size.y;
     for (const Girder& girder : girders) {
         if (!girder.covers_x(position.x)) {
             continue;
         }
         float surface = girder.surface_y_at(position.x);
-        if (position.y + playerHeight >= surface && surface >= position.y) {
-            position.y = surface - playerHeight / 2;
+        if (position.y + height >= surface && surface >= position.y) {
+            position.y = surface - height / 2;
             enemyShape.setPosition(position);
             enemySprite.setPosition(position);
             current_girder = &girder;

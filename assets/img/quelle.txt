@@ -1,0 +1,9 @@
+ghost_texture:
+https://www.vecteezy.com/free-png/pixel-monster
+
+player_sprites:
+generiert von ChatGPT
+
+flagge (ziel.png):
+https://www.flaticon.com/de/kostenloses-icon/ziel_5741911
+erstellt von surang (https://www.flaticon.com/de/autoren/surang)
